@@ -1,0 +1,123 @@
+1
+00:00:00,600 --> 00:00:03,165
+When a patient is admitted for ward care, they may
+
+2
+00:00:03,165 --> 00:00:05,320
+still remain in the Emergency Department —
+
+3
+00:00:05,720 --> 00:00:07,928
+for example, while waiting for a bed.
+
+4
+00:00:09,228 --> 00:00:11,399
+Inpatient Pharmacy needs to know where
+
+5
+00:00:11,399 --> 00:00:12,828
+that patient actually is.
+
+6
+00:00:13,228 --> 00:00:15,612
+Today, the way to find out is to call ED.
+
+7
+00:00:16,012 --> 00:00:18,748
+Is the patient still here, or already in the ward?
+
+8
+00:00:20,048 --> 00:00:23,110
+The patient's location affects Pharmacy's workflow:
+
+9
+00:00:23,110 --> 00:00:25,872
+order processing, verification and dispensing.
+
+10
+00:00:26,272 --> 00:00:28,843
+Checking manually adds delay, workload, and
+
+11
+00:00:28,843 --> 00:00:30,816
+the risk of outdated information.
+
+12
+00:00:32,116 --> 00:00:33,364
+The proposed solution.
+
+13
+00:00:33,764 --> 00:00:36,340
+For patients planned for ward admission who
+
+14
+00:00:36,340 --> 00:00:39,155
+need to stay in ED, register them in PHIS under
+
+15
+00:00:39,155 --> 00:00:41,012
+Kecemasan & Trauma (Admission).
+
+16
+00:00:41,412 --> 00:00:44,244
+Visit type: Inpatient. Department: Gen Med.
+
+17
+00:00:45,544 --> 00:00:47,899
+While the patient is still in ED, the
+
+18
+00:00:47,899 --> 00:00:51,144
+PHIS location shows Kecemasan & Trauma (Admission).
+
+19
+00:00:51,544 --> 00:00:54,159
+When the patient enters the receiving ward, the
+
+20
+00:00:54,159 --> 00:00:56,328
+location is updated to the actual ward.
+
+21
+00:00:57,628 --> 00:00:59,711
+Under the proposal, the update is made in
+
+22
+00:00:59,711 --> 00:01:01,388
+Visit Management, in eight steps.
+
+23
+00:01:01,788 --> 00:01:04,798
+Find the patient, edit the visit, select the new ward
+
+24
+00:01:04,798 --> 00:01:07,468
+location in the Transfer Detail List, and save.
+
+25
+00:01:10,628 --> 00:01:14,036
+Today, Pharmacy calls ED to ask where the patient is.
+
+26
+00:01:14,436 --> 00:01:17,311
+Under the proposal, the PHIS location itself shows
+
+27
+00:01:17,311 --> 00:01:20,244
+whether the patient is still in ED, or in the ward.
+
+28
+00:01:21,544 --> 00:01:24,740
+The objective: give Inpatient Pharmacy a reliable way to
+
+29
+00:01:24,740 --> 00:01:27,480
+tell whether an admitted patient is still in ED,
+
+30
+00:01:27,880 --> 00:01:29,884
+or has moved to the receiving ward — with
+
+31
+00:01:29,884 --> 00:01:31,448
+the minimum additional workload.

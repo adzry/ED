@@ -1,0 +1,147 @@
+{
+  "title": "Where is the patient? ED-to-ward location visibility for Inpatient Pharmacy",
+  "source": "Poster: 'The Problem / Why It Matters / Proposed Solution / How to Update PHIS Location / Our Objective'",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "timing": {
+    "leadIn": 0.6,
+    "gap": 0.4,
+    "tail": 0.7
+  },
+  "pronunciation": {
+    "Kecemasan": "[[ kətʃəmˈɑːsɑn ]]",
+    "PHIS": "P.H.I.S."
+  },
+  "highlight": {
+    "STILL IN ED": "red",
+    "still in ED": "red",
+    "call ED": "red",
+    "calls ED": "red",
+    "PATIENT IN WARD": "green",
+    "actual ward": "green",
+    "receiving ward": "green",
+    "PHIS location": "blue",
+    "PHIS": "blue",
+    "Visit Management": "blue",
+    "Transfer Detail List": "blue",
+    "Inpatient Pharmacy": "blue",
+    "Kecemasan & Trauma (Admission)": "yellow",
+    "proposed solution": "yellow",
+    "Under the proposal": "yellow",
+    "minimum additional workload": "purple"
+  },
+  "scenes": [
+    {
+      "id": "s1",
+      "name": "The patient",
+      "minDuration": 8,
+      "lines": [
+        {
+          "text": "When a patient is admitted for ward care, they may still remain in the Emergency Department —"
+        },
+        {
+          "text": "for example, while waiting for a bed."
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "name": "The visibility gap",
+      "minDuration": 10,
+      "lines": [
+        {
+          "text": "Inpatient Pharmacy needs to know where that patient actually is."
+        },
+        {
+          "text": "Today, the way to find out is to call ED."
+        },
+        {
+          "text": "Is the patient still here, or already in the ward?"
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "name": "Why it matters",
+      "minDuration": 10,
+      "lines": [
+        {
+          "text": "The patient's location affects Pharmacy's workflow: order processing, verification and dispensing."
+        },
+        {
+          "text": "Checking manually adds delay, workload, and the risk of outdated information."
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "name": "Proposed solution",
+      "minDuration": 10,
+      "lines": [
+        {
+          "text": "The proposed solution."
+        },
+        {
+          "text": "For patients planned for ward admission who need to stay in ED, register them in PHIS under Kecemasan & Trauma (Admission)."
+        },
+        {
+          "text": "Visit type: Inpatient. Department: Gen Med.",
+          "speak": "Visit type, Inpatient. Department, Gen Med."
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "name": "Two states",
+      "minDuration": 12,
+      "lines": [
+        {
+          "text": "While the patient is still in ED, the PHIS location shows Kecemasan & Trauma (Admission)."
+        },
+        {
+          "text": "When the patient enters the receiving ward, the location is updated to the actual ward."
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "name": "How PHIS is updated",
+      "minDuration": 13,
+      "lines": [
+        {
+          "text": "Under the proposal, the update is made in Visit Management, in eight steps."
+        },
+        {
+          "text": "Find the patient, edit the visit, select the new ward location in the Transfer Detail List, and save."
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "name": "The result",
+      "minDuration": 10,
+      "lines": [
+        {
+          "text": "Today, Pharmacy calls ED to ask where the patient is."
+        },
+        {
+          "text": "Under the proposal, the PHIS location itself shows whether the patient is still in ED, or in the ward."
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "name": "Objective",
+      "minDuration": 11,
+      "lines": [
+        {
+          "text": "The objective: give Inpatient Pharmacy a reliable way to tell whether an admitted patient is still in ED,"
+        },
+        {
+          "text": "or has moved to the receiving ward — with the minimum additional workload."
+        }
+      ]
+    }
+  ]
+}

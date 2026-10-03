@@ -1,0 +1,5 @@
+node_modules/
+build/
+models/
+out/stills/
+__pycache__/

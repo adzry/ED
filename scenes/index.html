@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ED to Ward Visibility</title>
+<style>
+@font-face { font-family: Inter; font-weight: 400; src: url(/node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: Inter; font-weight: 500; src: url(/node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2) format("woff2"); }
+@font-face { font-family: Inter; font-weight: 600; src: url(/node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: Inter; font-weight: 700; src: url(/node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: Inter; font-weight: 800; src: url(/node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2) format("woff2"); }
+
+:root {
+  --bg: #F3F0E9; --paper: #FBFAF6; --ink: #1C2128; --muted: #646B75; --line: #D8D2C5;
+  --red: #A9443C;    --red-t: #F2DFDB;
+  --green: #3A7D5B;  --green-t: #DCEADF;
+  --blue: #2D5A84;   --blue-t: #DDE6EF;
+  --yellow: #96701A; --yellow-t: #F4E3B5;
+  --purple: #574684; --purple-t: #E5E0EF;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg);
+  font-family: Inter, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+#stage { position: absolute; inset: 0; }
+.scene { position: absolute; inset: 0; opacity: 0; }
+.cam { position: absolute; inset: 0; transform-origin: 50% 45%; }
+.a { position: absolute; }
+.t { white-space: nowrap; }
+
+.kicker { left: 140px; top: 78px; font: 700 22px/1 Inter; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 16px; }
+.kicker i { display: block; width: 36px; height: 6px; border-radius: 3px; background: currentColor; }
+.head { left: 140px; top: 130px; font: 800 60px/1.1 Inter; letter-spacing: -.02em; }
+
+.box { position: absolute; border-radius: 18px; }
+.pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.label { font: 700 20px/1 Inter; letter-spacing: .14em; text-transform: uppercase; }
+.badge { position: absolute; width: 104px; height: 104px; margin: -52px 0 0 -52px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; box-shadow: 0 10px 30px rgba(28,33,40,.18); }
+.arrow { position: absolute; height: 4px; background: var(--ink); opacity: .55; transform-origin: 0 50%; }
+.arrow::after { content: ""; position: absolute; right: -2px; top: -8px; border-left: 16px solid var(--ink); border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
+.varrow { position: absolute; width: 4px; background: var(--ink); opacity: .4; transform-origin: 50% 0; }
+.varrow::after { content: ""; position: absolute; bottom: -2px; left: -8px; border-top: 16px solid var(--ink); border-left: 10px solid transparent; border-right: 10px solid transparent; }
+
+#chrome-tag { right: 140px; top: 66px; padding: 12px 20px; border-radius: 8px; background: var(--yellow-t); color: #7A5A12; font: 700 19px/1 Inter; letter-spacing: .16em; opacity: 0; }
+#progress { left: 0; top: 0; height: 5px; width: 1920px; background: rgba(28,33,40,.07); }
+#progress b { display: block; height: 100%; width: 0; background: rgba(28,33,40,.35); }
+
+#cap { left: 50%; bottom: 52px; transform: translateX(-50%); max-width: 1560px; padding: 15px 30px 17px; border-radius: 12px;
+  background: rgba(24,28,34,.88); color: #F7F5F0; font: 600 36px/1.25 Inter; text-align: center; white-space: nowrap; opacity: 0; }
+#cap .hl-red { color: #F2A79E; } #cap .hl-green { color: #A3D9B8; } #cap .hl-blue { color: #AECBEA; }
+#cap .hl-yellow { color: #F3CF72; } #cap .hl-purple { color: #CDBDF2; }
+
+/* S6 step cards */
+.step { position: absolute; width: 380px; height: 236px; background: var(--paper); border: 3px solid var(--line); border-radius: 18px; padding: 26px 28px; }
+.step .num { width: 54px; height: 54px; border-radius: 50%; border: 3px solid var(--blue); color: var(--blue); display: grid; place-items: center; font: 800 26px/1 Inter; }
+.step .txt { margin-top: 20px; font: 600 28px/1.22 Inter; white-space: normal; }
+.step .txt b { font-weight: 800; }
+.step svg { position: absolute; right: 26px; top: 26px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="person" viewBox="0 0 80 80"><circle cx="40" cy="25" r="14" fill="#fff"/><path d="M14 72c0-17 11.6-28 26-28s26 11 26 28z" fill="#fff"/></symbol>
+    <symbol id="phone" viewBox="0 0 48 48"><path d="M14 6h7l3 10-5 3c2.5 5.5 6.5 9.5 12 12l3-5 10 3v7c0 2-2 4-4 4C21 40 8 27 8 10c0-2 2-4 4-4z" fill="currentColor"/></symbol>
+    <symbol id="pin" viewBox="0 0 48 48"><path d="M24 4c-8 0-14 6-14 14 0 10 14 26 14 26s14-16 14-26c0-8-6-14-14-14z" fill="currentColor"/><circle cx="24" cy="18" r="5" fill="#fff"/></symbol>
+  </defs>
+</svg>
+
+<div id="stage">
+
+<!-- 1 · THE PATIENT -->
+<section class="scene" id="s1"><div class="cam">
+  <div class="a kicker" style="color:var(--ink)"><i></i>01 · The patient</div>
+  <div class="a varrow" id="s1-track" style="left:698px; top:300px; height:390px; opacity:.18"></div>
+  <div class="a t" id="s1-n0" style="left:780px; top:228px"><div class="label" style="color:var(--muted)">Patient</div><div style="font:700 44px/1.2 Inter;margin-top:10px">Admitted</div></div>
+  <div class="a t" id="s1-n1" style="left:780px; top:448px"><div class="label" style="color:var(--muted)">Plan</div><div style="font:700 44px/1.2 Inter;margin-top:10px">Ward admission</div></div>
+  <div class="a t" id="s1-n2" style="left:780px; top:650px"><div class="label" style="color:var(--red)">Physical location</div><div style="font:800 76px/1.1 Inter;color:var(--red);margin-top:8px">STILL IN ED</div>
+    <div id="s1-sub" style="font:500 30px/1.3 Inter;color:var(--muted);margin-top:12px">e.g. waiting for a bed</div></div>
+  <div class="a" id="s1-ring" style="left:612px; top:648px; width:172px; height:172px; border-radius:50%; background:var(--red-t)"></div>
+  <div class="badge" id="s1-pt" style="left:700px; top:270px"><svg width="70" height="70"><use href="#person"/></svg></div>
+</div></section>
+
+<!-- 2 · THE VISIBILITY GAP -->
+<section class="scene" id="s2"><div class="cam">
+  <div class="a kicker" style="color:var(--red)"><i></i>02 · The visibility gap</div>
+  <div class="a" id="s2-div" style="left:959px; top:200px; width:2px; height:600px; background:var(--line)"></div>
+  <div class="a label" id="s2-l1" style="left:200px; top:200px; color:var(--muted)">Physical reality</div>
+  <div class="box" id="s2-ed" style="left:200px; top:250px; width:620px; height:400px; background:var(--red-t); border:3px solid var(--red)">
+    <div class="a label" style="left:32px; top:30px; color:var(--red)">Emergency Department</div>
+    <div class="badge" style="left:310px; top:205px"><svg width="70" height="70"><use href="#person"/></svg></div>
+    <div class="a t" style="left:0; width:614px; top:290px; text-align:center; font:600 30px/1.2 Inter; color:var(--red)">Patient is here</div>
+  </div>
+  <div class="a label" id="s2-l2" style="left:1100px; top:200px; color:var(--muted)">Pharmacy's view</div>
+  <div class="box" id="s2-ph" style="left:1100px; top:250px; width:620px; height:400px; background:var(--paper); border:3px solid var(--blue); overflow:hidden">
+    <div class="a label" style="left:0; top:0; width:614px; height:72px; background:var(--blue); color:#fff; display:flex; align-items:center; padding-left:32px">Inpatient Pharmacy</div>
+    <div class="a t" style="left:32px; top:110px; font:600 30px/1 Inter; color:var(--muted)">Patient location</div>
+    <div class="a t" id="s2-q" style="left:0; width:614px; top:160px; text-align:center; font:800 150px/1 Inter; color:var(--blue)">?</div>
+  </div>
+  <div class="a" id="s2-link" style="left:820px; top:449px; width:280px; height:4px; background:var(--red); transform-origin:100% 50%"></div>
+  <div class="a" id="s2-call" style="left:900px; top:390px; width:120px; height:120px; border-radius:50%; background:var(--red); color:#fff; display:grid; place-items:center; box-shadow:0 10px 30px rgba(169,68,60,.3)"><svg width="54" height="54"><use href="#phone"/></svg></div>
+  <div class="a label t" id="s2-calltxt" style="left:860px; width:200px; top:534px; text-align:center; color:var(--red); font-size:24px">Call ED</div>
+  <div class="pill t" id="s2-b1" style="left:430px; top:720px; width:430px; height:84px; background:var(--red-t); border:3px solid var(--red); color:var(--red); font-size:34px">Still in ED?</div>
+  <div class="a t" id="s2-or" style="left:880px; top:742px; width:160px; text-align:center; font:600 32px/1 Inter; color:var(--muted)">or</div>
+  <div class="pill t" id="s2-b2" style="left:1060px; top:720px; width:430px; height:84px; background:var(--green-t); border:3px solid var(--green); color:var(--green); font-size:34px">Already in the ward?</div>
+</div></section>
+
+<!-- 3 · WHY IT MATTERS -->
+<section class="scene" id="s3"><div class="cam">
+  <div class="a kicker" style="color:var(--blue)"><i></i>03 · Why it matters</div>
+  <div class="a head t" id="s3-h">Location affects Pharmacy workflow</div>
+  <div class="box" id="s3-loc" style="left:140px; top:390px; width:330px; height:160px; background:var(--blue); color:#fff; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:12px">
+    <svg width="44" height="44" style="color:#fff"><use href="#pin"/></svg>
+    <div class="label t" style="font-size:24px">Patient location</div>
+  </div>
+  <div class="arrow" id="s3-a0" style="left:490px; top:468px; width:90px"></div>
+  <div id="s3-wf">
+    <div class="box" style="left:610px; top:330px; width:1170px; height:280px; border:3px dashed var(--line)"></div>
+    <div class="a label t" style="left:640px; top:320px; background:var(--bg); padding:0 12px; color:var(--muted)">Inpatient Pharmacy workflow</div>
+  </div>
+  <div class="box t" id="s3-c0" style="left:650px; top:390px; width:310px; height:160px; background:var(--paper); border:3px solid var(--blue); display:grid; place-items:center; text-align:center; font:700 34px/1.2 Inter">Order<br>processing</div>
+  <div class="arrow" id="s3-a1" style="left:972px; top:468px; width:50px"></div>
+  <div class="box t" id="s3-c1" style="left:1040px; top:390px; width:310px; height:160px; background:var(--paper); border:3px solid var(--blue); display:grid; place-items:center; font:700 34px/1.2 Inter">Verification</div>
+  <div class="arrow" id="s3-a2" style="left:1362px; top:468px; width:50px"></div>
+  <div class="box t" id="s3-c2" style="left:1430px; top:390px; width:310px; height:160px; background:var(--paper); border:3px solid var(--blue); display:grid; place-items:center; font:700 34px/1.2 Inter">Dispensing</div>
+  <div class="a t" id="s3-m" style="left:140px; top:705px; font:600 32px/1 Inter; color:var(--muted)">Manual checking adds</div>
+  <div class="pill t" id="s3-x0" style="left:520px; top:682px; width:200px; height:76px; background:var(--red-t); color:var(--red); font-size:32px">Delay</div>
+  <div class="pill t" id="s3-x1" style="left:744px; top:682px; width:240px; height:76px; background:var(--red-t); color:var(--red); font-size:32px">Workload</div>
+  <div class="pill t" id="s3-x2" style="left:1008px; top:682px; width:500px; height:76px; background:var(--red-t); color:var(--red); font-size:32px">Risk of outdated information</div>
+</div></section>
+
+<!-- 4 · PROPOSED SOLUTION -->
+<section class="scene" id="s4"><div class="cam">
+  <div class="a kicker" style="color:var(--yellow)"><i></i>04 · Proposed solution</div>
+  <div class="a" id="s4-mark" style="left:124px; top:150px; width:810px; height:96px; background:var(--yellow-t); border-radius:6px; transform-origin:0 50%"></div>
+  <div class="a t" id="s4-h" style="left:140px; top:146px; font:800 88px/1.1 Inter; letter-spacing:-.02em">Proposed solution</div>
+  <div class="a t" id="s4-sub" style="left:140px; top:290px; font:500 34px/1.35 Inter; color:var(--muted)">For patients planned for ward admission who need to remain in ED,<br><span style="color:var(--ink);font-weight:700">register the patient in PHIS:</span></div>
+  <div class="box" id="s4-card" style="left:420px; top:430px; width:1080px; height:420px; background:var(--paper); border:3px solid var(--blue); overflow:hidden; box-shadow:0 20px 50px rgba(28,33,40,.10)">
+    <div class="a label" style="left:0; top:0; width:1074px; height:70px; background:var(--blue); color:#fff; display:flex; align-items:center; padding-left:40px">PHIS · Registration</div>
+    <div class="a" id="s4-r0" style="left:0; top:70px; width:1074px; height:96px; border-bottom:2px solid var(--line)">
+      <div class="a t" style="left:40px; top:32px; font:600 30px/1 Inter; color:var(--muted)">Visit Type</div>
+      <div class="a t" style="left:390px; top:25px; font:800 44px/1 Inter; color:var(--blue)">INPATIENT</div></div>
+    <div class="a" id="s4-r1" style="left:0; top:166px; width:1074px; height:96px; border-bottom:2px solid var(--line)">
+      <div class="a t" style="left:40px; top:32px; font:600 30px/1 Inter; color:var(--muted)">Department</div>
+      <div class="a t" style="left:390px; top:25px; font:800 44px/1 Inter; color:var(--blue)">GEN MED</div></div>
+    <div class="a" id="s4-r2" style="left:0; top:262px; width:1074px; height:152px">
+      <div class="a" id="s4-r2hl" style="left:370px; top:20px; width:680px; height:112px; background:var(--yellow-t); border-radius:10px; transform-origin:0 50%"></div>
+      <div class="a t" style="left:40px; top:58px; font:600 30px/1 Inter; color:var(--muted)">Location</div>
+      <div class="a t" style="left:390px; top:30px; font:800 44px/1.1 Inter; color:var(--ink)">KECEMASAN &amp; TRAUMA<br>(ADMISSION)</div></div>
+  </div>
+</div></section>
+
+<!-- 5 · TWO STATES -->
+<section class="scene" id="s5"><div class="cam">
+  <div class="a kicker" style="color:var(--ink)"><i></i>05 · Two states</div>
+  <div class="a t" id="s5-st1" style="left:140px; top:130px; font:800 52px/1.1 Inter; color:var(--red)"><span style="font-weight:600;color:var(--muted)">State 1 · </span>PATIENT STILL IN ED</div>
+  <div class="a t" id="s5-st2" style="left:140px; top:130px; font:800 52px/1.1 Inter; color:var(--green)"><span style="font-weight:600;color:var(--muted)">State 2 · </span>PATIENT IN WARD</div>
+  <div class="box" id="s5-ed" style="left:140px; top:240px; width:720px; height:280px; background:var(--red-t); border:3px solid var(--red)">
+    <div class="a label" style="left:30px; top:28px; color:var(--red)">Emergency Department</div></div>
+  <div class="arrow" id="s5-ar" style="left:890px; top:378px; width:130px"></div>
+  <div class="box" id="s5-wd" style="left:1060px; top:240px; width:720px; height:280px; background:var(--green-t); border:3px solid var(--green)">
+    <div class="a label" style="left:30px; top:28px; color:var(--green)">Receiving ward</div></div>
+  <div class="badge" id="s5-pt" style="left:500px; top:400px"><svg width="70" height="70"><use href="#person"/></svg></div>
+  <div class="box" id="s5-card" style="left:360px; top:575px; width:1200px; height:300px; background:var(--paper); border:3px solid var(--red); overflow:hidden">
+    <div class="a label" style="left:0; top:0; width:1194px; height:62px; background:var(--blue); color:#fff; display:flex; align-items:center; padding-left:40px">PHIS location</div>
+    <div class="a t" id="s5-v1" style="left:40px; top:94px; font:800 50px/1 Inter; color:var(--red)">KECEMASAN &amp; TRAUMA (ADMISSION)</div>
+    <div class="a t" id="s5-v2" style="left:40px; top:94px; font:800 50px/1 Inter; color:var(--green)">ACTUAL WARD LOCATION</div>
+    <div class="a t" id="s5-m1" style="left:40px; top:170px; font:500 30px/1 Inter; color:var(--ink)">Patient has not yet transitioned to the ward</div>
+    <div class="a t" id="s5-m2" style="left:40px; top:170px; font:500 30px/1 Inter; color:var(--ink)">Patient has entered the receiving ward</div>
+    <div class="a t" style="left:40px; top:236px; font:500 24px/1 Inter; color:var(--muted)">Visit Type: Inpatient  ·  Department: Gen Med</div>
+  </div>
+</div></section>
+
+<!-- 6 · HOW PHIS IS UPDATED -->
+<section class="scene" id="s6"><div class="cam">
+  <div class="a kicker" style="color:var(--blue)"><i></i>06 · How to update PHIS location</div>
+  <div class="a head t" id="s6-h">Proposed update steps</div>
+  <div id="s6-steps"></div>
+</div></section>
+
+<!-- 7 · THE RESULT -->
+<section class="scene" id="s7"><div class="cam">
+  <div class="a kicker" style="color:var(--blue)"><i></i>07 · The result</div>
+  <div id="s7-rowA">
+    <div class="pill t" style="left:140px; top:262px; width:220px; height:60px; background:#E4E0D7; color:var(--muted); font-size:20px; letter-spacing:.14em">TODAY</div>
+    <div class="box t" style="left:400px; top:222px; width:380px; height:140px; background:var(--paper); border:3px solid var(--blue); display:grid; place-items:center; font:700 32px/1.2 Inter; text-align:center">Inpatient<br>Pharmacy</div>
+    <div class="arrow" style="left:800px; top:290px; width:70px"></div>
+    <div class="box t" style="left:890px; top:222px; width:340px; height:140px; background:var(--red-t); border:3px solid var(--red); color:var(--red); display:flex; align-items:center; justify-content:center; gap:16px; font:800 34px/1 Inter"><svg width="40" height="40"><use href="#phone"/></svg>Call ED</div>
+    <div class="arrow" style="left:1250px; top:290px; width:70px"></div>
+    <div class="box t" style="left:1340px; top:222px; width:440px; height:140px; background:var(--paper); border:3px dashed var(--red); display:grid; place-items:center; font:600 34px/1.2 Inter; color:var(--red)">“Where is the patient?”</div>
+  </div>
+  <div id="s7-rowB">
+    <div class="pill t" style="left:140px; top:560px; width:220px; height:60px; background:var(--yellow-t); color:#7A5A12; font-size:20px; letter-spacing:.14em">PROPOSED</div>
+    <div class="box t" style="left:400px; top:520px; width:380px; height:140px; background:var(--blue); color:#fff; display:grid; place-items:center; font:800 32px/1.2 Inter; text-align:center">PHIS LOCATION</div>
+    <div class="arrow" style="left:800px; top:588px; width:70px"></div>
+    <div class="box t" style="left:890px; top:520px; width:340px; height:140px; background:var(--blue-t); border:3px solid var(--blue); color:var(--blue); display:grid; place-items:center; font:800 30px/1.2 Inter; text-align:center">PHARMACY<br>VISIBILITY</div>
+    <div class="arrow" style="left:1250px; top:588px; width:70px"></div>
+    <div class="box" style="left:1340px; top:520px; width:440px; height:140px; background:var(--paper); border:3px solid var(--line)">
+      <div class="pill t" style="left:28px; top:34px; width:150px; height:72px; background:var(--red-t); border:3px solid var(--red); color:var(--red); font-size:32px">ED</div>
+      <div class="a t" style="left:178px; top:52px; width:78px; text-align:center; font:600 30px/1 Inter; color:var(--muted)">or</div>
+      <div class="pill t" style="left:256px; top:34px; width:150px; height:72px; background:var(--green-t); border:3px solid var(--green); color:var(--green); font-size:32px">WARD</div>
+    </div>
+    <div class="a t" style="left:400px; top:700px; font:500 30px/1.3 Inter; color:var(--muted)">Patient location made more visible through existing PHIS information</div>
+  </div>
+</div></section>
+
+<!-- 8 · OBJECTIVE -->
+<section class="scene" id="s8"><div class="cam">
+  <div class="a kicker" style="color:var(--purple)"><i></i>08 · Objective</div>
+  <div class="a" id="s8-txt" style="left:140px; top:150px; width:1640px; font:600 50px/1.28 Inter; letter-spacing:-.01em">
+    <span id="s8-p1">Provide Inpatient Pharmacy with a reliable way to determine whether an admitted patient is <span style="color:var(--red);white-space:nowrap">still in ED</span></span>
+    <span id="s8-p2">or has transitioned to the <span style="color:var(--green);white-space:nowrap">receiving ward</span>, with the <span style="color:var(--purple);white-space:nowrap">minimum additional workload</span>.</span>
+  </div>
+  <div id="s8-dia">
+    <div class="box t" style="left:340px; top:500px; width:420px; height:170px; background:var(--red-t); border:3px solid var(--red); color:var(--red); display:grid; place-items:center; font:800 40px/1 Inter">ED</div>
+    <div class="box t" style="left:1160px; top:500px; width:420px; height:170px; background:var(--green-t); border:3px solid var(--green); color:var(--green); display:grid; place-items:center; font:800 40px/1 Inter">WARD</div>
+    <div class="a" id="s8-bridge" style="left:760px; top:565px; width:400px; height:40px; background:var(--blue); transform-origin:50% 50%"></div>
+    <div class="a label t" id="s8-phis" style="left:760px; top:520px; width:400px; text-align:center; color:var(--blue); font-size:24px">PHIS location</div>
+    <div class="a t" id="s8-lr" style="left:760px; top:568px; width:400px; text-align:center; font:800 30px/34px Inter; color:#fff">⟵ ⟶</div>
+  </div>
+</div></section>
+
+<div class="a" id="progress"><b></b></div>
+<div class="a" id="chrome-tag">PROPOSED WORKFLOW</div>
+<div class="a" id="cap"></div>
+</div>
+
+<script>
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const eio = x => (x = clamp(x), x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const eout = x => 1 - Math.pow(1 - clamp(x), 3);
+const $ = s => document.querySelector(s);
+const lerp = (a, b, k) => a + (b - a) * k;
+const mix = (c1, c2, k) => {
+  const p = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+  const a = p(c1), b = p(c2);
+  return `rgb(${a.map((v, i) => Math.round(lerp(v, b[i], k))).join(',')})`;
+};
+
+let TL, SC = {};
+// Time (s) at which `word` is spoken within line i of scene id, by character position.
+function W(id, i, word) {
+  const l = SC[id].lines[i], k = l.text.indexOf(word);
+  if (k < 0) throw new Error(`"${word}" not in ${id}:${i}`);
+  return l.start + (k / l.text.length) * (l.end - l.start);
+}
+const L = (id, i) => SC[id].lines[i].start;
+
+// Fade + rise an element in at time `at`; optionally fade out at `out`.
+function rv(el, t, at, { d = .6, dy = 22, dx = 0, out = Infinity, od = .4, max = 1, extra = '' } = {}) {
+  if (typeof el === 'string') el = $(el);
+  const k = eout((t - at) / d) * (1 - eio((t - out) / od));
+  el.style.opacity = k * max;
+  el.style.transform = `translate(${(1 - k) * dx}px, ${(1 - k) * dy}px) ${extra}`;
+  return k;
+}
+
+const STEPS = [
+  ['Go to <b>Patient Management → Visit Management</b>', 'menu'],
+  ['Select location <b>Kecemasan &amp; Trauma (Admission)</b>', 'select'],
+  ['<b>Search</b> for the patient', 'search'],
+  ['<b>Double-click</b> the patient’s name', 'click'],
+  ['Click <b>Edit</b>', 'edit'],
+  ['Go to <b>Transfer Detail List</b>', 'list'],
+  ['Select the <b>new ward location</b>', 'select'],
+  ['Click <b>Save</b>', 'save'],
+];
+const GLYPH = {
+  menu:   '<rect x="6" y="10" width="36" height="5" rx="2"/><rect x="6" y="21" width="36" height="5" rx="2"/><rect x="6" y="32" width="24" height="5" rx="2"/>',
+  select: '<rect x="4" y="12" width="40" height="22" rx="5" fill="none" stroke-width="3"/><path d="M30 20l5 6 5-6z"/>',
+  search: '<circle cx="20" cy="20" r="11" fill="none" stroke-width="4"/><path d="M28 28l12 12" stroke-width="5" stroke-linecap="round"/>',
+  click:  '<path d="M14 6l22 18-10 2 6 12-5 2-6-12-7 7z"/>',
+  edit:   '<path d="M8 40l3-11 20-20 8 8-20 20z"/>',
+  list:   '<rect x="6" y="8" width="36" height="8" rx="2"/><rect x="6" y="20" width="36" height="8" rx="2" opacity=".6"/><rect x="6" y="32" width="36" height="8" rx="2" opacity=".35"/>',
+  save:   '<path d="M8 25l11 11 21-24" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>',
+};
+
+function buildSteps() {
+  const host = $('#s6-steps');
+  STEPS.forEach(([txt, g], i) => {
+    const el = document.createElement('div');
+    el.className = 'step'; el.id = `s6-k${i}`;
+    el.style.left = `${140 + (i % 4) * 420}px`;
+    el.style.top = `${262 + Math.floor(i / 4) * 290}px`;
+    el.innerHTML = `<div class="num">${i + 1}</div><div class="txt">${txt}</div>
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="currentColor" stroke="currentColor" style="color:var(--line)">${GLYPH[g]}</svg>`;
+    host.appendChild(el);
+  });
+}
+
+const SCENES = {
+  s1(t) {
+    const a = L('s1', 0), b = W('s1', 0, 'ward care'), c = W('s1', 0, 'remain');
+    rv('#s1-track', t, a, { d: .8, dy: 0, max: .18 });
+    rv('#s1-n0', t, a + .1);
+    rv('#s1-n1', t, b - .2);
+    rv('#s1-n2', t, c - .2);
+    rv('#s1-sub', t, L('s1', 1) + .2, { dy: 10 });
+    rv('#s1-ring', t, c, { d: .9, dy: 0, extra: `scale(${.6 + .4 * eout((t - c) / .9)})` });
+    // Patient badge travels down the track: admitted → ward plan → still in ED.
+    const pt = $('#s1-pt');
+    pt.style.top = `${270 + 220 * eio((t - b + .4) / 1) + 244 * eio((t - c + .3) / 1.1)}px`;
+    pt.style.opacity = eout((t - a) / .5);
+    pt.style.background = mix('#1C2128', '#A9443C', eio((t - c) / .8));
+  },
+  s2(t) {
+    const a = L('s2', 0), c = L('s2', 1), q = L('s2', 2);
+    rv('#s2-l1', t, a); rv('#s2-ed', t, a + .1, { dx: -30, dy: 0 });
+    rv('#s2-l2', t, a + .5); rv('#s2-ph', t, a + .6, { dx: 30, dy: 0 });
+    rv('#s2-div', t, a, { dy: 0, out: W('s2', 1, 'call ED') - .4 });
+    $('#s2-q').style.opacity = .35 + .65 * (.5 + .5 * Math.cos((t - a) * 2.4));
+    const k = eio((t - W('s2', 1, 'call ED') + .5) / .8);
+    $('#s2-link').style.transform = `scaleX(${k})`;
+    $('#s2-link').style.opacity = k > 0 ? 1 : 0;
+    rv('#s2-call', t, W('s2', 1, 'call ED') - .1, { dy: 0, d: .5, extra: `scale(${.7 + .3 * eout((t - W('s2', 1, 'call ED') + .1) / .5)})` });
+    rv('#s2-calltxt', t, W('s2', 1, 'call ED') + .1, { dy: 8 });
+    rv('#s2-b1', t, W('s2', 2, 'still'));
+    rv('#s2-or', t, W('s2', 2, 'or'), { dy: 8 });
+    rv('#s2-b2', t, W('s2', 2, 'already'));
+    void q;
+  },
+  s3(t) {
+    const a = L('s3', 0);
+    rv('#s3-h', t, a - .3);
+    rv('#s3-loc', t, W('s3', 0, 'location') - .2, { dx: -24, dy: 0 });
+    rv('#s3-a0', t, W('s3', 0, 'affects'), { dy: 0, extra: `scaleX(${eout((t - W('s3', 0, 'affects')) / .6)})` });
+    rv('#s3-wf', t, W('s3', 0, 'workflow') - .2, { dy: 0 });
+    rv('#s3-c0', t, W('s3', 0, 'order'));
+    rv('#s3-a1', t, W('s3', 0, 'verification') - .1, { dy: 0 });
+    rv('#s3-c1', t, W('s3', 0, 'verification'));
+    rv('#s3-a2', t, W('s3', 0, 'dispensing') - .1, { dy: 0 });
+    rv('#s3-c2', t, W('s3', 0, 'dispensing'));
+    rv('#s3-m', t, L('s3', 1));
+    rv('#s3-x0', t, W('s3', 1, 'delay'));
+    rv('#s3-x1', t, W('s3', 1, 'workload'));
+    rv('#s3-x2', t, W('s3', 1, 'risk'));
+  },
+  s4(t) {
+    const a = L('s4', 0);
+    $('#s4-mark').style.transform = `scaleX(${eio((t - a + .1) / .8)})`;
+    rv('#s4-h', t, a - .2, { dy: 16 });
+    rv('#s4-sub', t, L('s4', 1));
+    rv('#s4-card', t, W('s4', 1, 'register') - .2, { dy: 40, d: .8 });
+    rv('#s4-r0', t, W('s4', 1, 'register') + .3, { dy: 10 });
+    rv('#s4-r1', t, W('s4', 1, 'register') + .6, { dy: 10 });
+    rv('#s4-r2', t, W('s4', 1, 'Kecemasan') - .3, { dy: 10 });
+    $('#s4-r2hl').style.transform = `scaleX(${eio((t - W('s4', 1, 'Kecemasan')) / .7)})`;
+    const pulse = (at) => clamp(1 - Math.abs(t - at - .4) / .7);
+    $('#s4-r0').style.background = `rgba(221,230,239,${pulse(W('s4', 2, 'Visit'))})`;
+    $('#s4-r1').style.background = `rgba(221,230,239,${pulse(W('s4', 2, 'Department'))})`;
+  },
+  s5(t) {
+    const a = L('s5', 0);
+    // Walk starts as "enters" is spoken; PHIS location updates just after the patient arrives.
+    const go = Math.min(W('s5', 1, 'enters') - .2, W('s5', 1, 'updated') - 2.1), arrive = go + 1.8;
+    const upd = arrive + .25;
+    rv('#s5-ed', t, a - .3, { dy: 0 }); rv('#s5-wd', t, a - .1, { dy: 0 });
+    rv('#s5-ar', t, a, { dy: 0 });
+    rv('#s5-card', t, W('s5', 0, 'PHIS') - .3, { dy: 30 });
+    rv('#s5-st1', t, a - .3, { out: upd, od: .4 });
+    rv('#s5-st2', t, upd + .1);
+    const pt = $('#s5-pt');
+    pt.style.left = `${lerp(500, 1420, eio((t - go) / 1.8))}px`;
+    pt.style.opacity = eout((t - a + .2) / .5);
+    pt.style.background = mix('#A9443C', '#3A7D5B', eio((t - arrive + .4) / .6));
+    rv('#s5-v1', t, W('s5', 0, 'PHIS'), { out: upd, od: .35, dy: 0 });
+    rv('#s5-m1', t, W('s5', 0, 'PHIS') + .3, { out: upd, od: .35, dy: 0 });
+    const k = eout((t - upd - .2) / .6);
+    $('#s5-v2').style.opacity = k; $('#s5-v2').style.transform = `translateY(${(1 - k) * 30}px)`;
+    rv('#s5-m2', t, upd + .4, { dy: 0 });
+    $('#s5-card').style.borderColor = mix('#A9443C', '#3A7D5B', eio((t - upd) / .6));
+    const glow = clamp(1 - Math.abs(t - W('s5', 0, 'Kecemasan') - .4) / .8);
+    $('#s5-card').style.boxShadow = `0 0 0 ${10 * glow}px rgba(244,227,181,${glow})`;
+  },
+  s6(t) {
+    const at = [W('s6', 0, 'Visit'), W('s6', 0, 'eight') - .1, W('s6', 1, 'Find'), W('s6', 1, 'Find') + .8,
+                W('s6', 1, 'edit'), W('s6', 1, 'select') - .2, W('s6', 1, 'new ward'), W('s6', 1, 'save') - .3];
+    rv('#s6-h', t, L('s6', 0) - .3);
+    STEPS.forEach((_, i) => {
+      const el = $(`#s6-k${i}`);
+      const shown = rv(el, t, L('s6', 0) + .1 + i * .07, { max: .45, dy: 16 });
+      const k = eio((t - at[i]) / .4);
+      if (shown >= .99 || k > 0) el.style.opacity = lerp(.45, 1, k);
+      el.style.borderColor = mix('#D8D2C5', '#2D5A84', k);
+      el.style.transform = `translateY(${-8 * k * clamp(1 - (t - at[i] - .6) / .6)}px)`;
+      const n = el.querySelector('.num');
+      n.style.background = mix('#FBFAF6', '#2D5A84', k); n.style.color = k > .5 ? '#fff' : 'var(--blue)';
+      el.querySelector('svg').style.color = mix('#D8D2C5', '#2D5A84', k);
+    });
+  },
+  s7(t) {
+    const a = L('s7', 0), b = L('s7', 1);
+    rv('#s7-rowA', t, a - .3, { dy: 20 });
+    $('#s7-rowA').style.opacity = clamp(eout((t - a + .3) / .6)) * lerp(1, .38, eio((t - b - .4) / .8));
+    rv('#s7-rowB', t, b, { dy: 30, d: .8 });
+  },
+  s8(t) {
+    const a = L('s8', 0), b = L('s8', 1);
+    rv('#s8-p1', t, a - .2, { dy: 0, d: .9 });
+    rv('#s8-p2', t, b - .2, { dy: 0, d: .9 });
+    rv('#s8-dia', t, b + 1.2, { dy: 24, d: .8 });
+    $('#s8-bridge').style.transform = `scaleX(${eio((t - b - 1.6) / .9)})`;
+    rv('#s8-phis', t, b + 2.2, { dy: 8 });
+    rv('#s8-lr', t, b + 2.4, { dy: 0 });
+  },
+};
+
+const HL_ORDER = () => Object.keys(TL.highlight).sort((x, y) => y.length - x.length);
+function captionHTML(text) {
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  let parts = [{ s: text }];
+  for (const term of HL_ORDER()) {
+    parts = parts.flatMap(p => {
+      if (p.tone) return [p];
+      const out = []; let rest = p.s, k;
+      while ((k = rest.indexOf(term)) >= 0) {
+        out.push({ s: rest.slice(0, k) }, { s: term, tone: TL.highlight[term] });
+        rest = rest.slice(k + term.length);
+      }
+      out.push({ s: rest });
+      return out;
+    });
+  }
+  return parts.map(p => p.tone ? `<span class="hl-${p.tone}">${esc(p.s)}</span>` : esc(p.s)).join('');
+}
+
+function activeCaption(t) {
+  for (const s of TL.scenes) for (const l of s.lines) for (const c of l.captions)
+    if (t >= c.start - .05 && t < c.end + .25) return c;
+  return null;
+}
+
+let lastCap = null;
+window.renderAt = function (t) {
+  for (const s of TL.scenes) {
+    const el = document.getElementById(s.id);
+    const fin = eio((t - s.start) / .5), fout = eio((s.end - t) / .45);
+    const last = s === TL.scenes[TL.scenes.length - 1];
+    const vis = t >= s.start - .01 && (t < s.end || last);
+    el.style.opacity = vis ? Math.min(fin, last ? eio((TL.duration - t) / 1.2) : fout) : 0;
+    el.style.visibility = vis ? 'visible' : 'hidden';
+    el.querySelector('.cam').style.transform =
+      `scale(${1 + .025 * clamp((t - s.start) / (s.end - s.start))}) translateX(${(1 - fin) * 30}px)`;
+    if (vis) SCENES[s.id](t);
+  }
+  const s4 = SC.s4.start;
+  $('#chrome-tag').style.opacity = eout((t - s4 - .2) / .6) * eio((TL.duration - t) / 1.2);
+  $('#progress b').style.width = `${1920 * clamp(t / TL.duration)}px`;
+
+  const c = activeCaption(t), cap = $('#cap');
+  if (c !== lastCap) { cap.innerHTML = c ? captionHTML(c.text) : ''; lastCap = c; }
+  cap.style.opacity = c ? Math.min(eout((t - c.start + .05) / .15), eout((c.end + .25 - t) / .15)) : 0;
+};
+
+// Layout inspection used by tools/check_layout.mjs.
+window.inspectFrame = function () {
+  const effOpacity = el => { let o = 1; for (; el && el !== document.body; el = el.parentElement) { const cs = getComputedStyle(el); if (cs.visibility === 'hidden' || cs.display === 'none') return 0; o *= +cs.opacity; } return o; };
+  // Rects of the element's own text nodes only (children are inspected separately).
+  const ownText = el => [...el.childNodes].filter(n => n.nodeType === 3 && n.textContent.trim());
+  const textRects = el => ownText(el).flatMap(n => { const r = document.createRange(); r.selectNodeContents(n); return [...r.getClientRects()]; }).filter(q => q.width > 0);
+  const items = [];
+  const scene = [...document.querySelectorAll('.scene')].find(s => getComputedStyle(s).visibility === 'visible' && +getComputedStyle(s).opacity > .05);
+  if (scene) for (const el of scene.querySelectorAll('*')) {
+    if (el.closest('svg')) continue;
+    const own = [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+    if (!own) continue;
+    const o = effOpacity(el); if (o < .05) continue;
+    const box = el.closest('.box, .pill, .step');
+    items.push({ id: el.id || (el.closest('[id]') || {}).id, text: ownText(el).map(n => n.textContent).join(' ').trim().replace(/\s+/g, ' '), opacity: o,
+      rects: textRects(el).map(r => [r.left, r.top, r.right, r.bottom]),
+      box: box ? (r => [r.left, r.top, r.right, r.bottom])(box.getBoundingClientRect()) : null,
+      boxId: box ? (box.id || (box.closest('[id]') || {}).id) : null });
+  }
+  const cap = $('#cap');
+  const capR = +getComputedStyle(cap).opacity > .05 ? cap.getBoundingClientRect() : null;
+  return { scene: scene && scene.id, items, caption: capR && { text: cap.textContent, rect: [capR.left, capR.top, capR.right, capR.bottom] } };
+};
+
+window.ready = (async () => {
+  TL = await (await fetch('/build/timeline.json')).json();
+  for (const s of TL.scenes) SC[s.id] = s;
+  buildSteps();
+  await document.fonts.load('800 40px Inter'); await document.fonts.load('600 40px Inter');
+  await document.fonts.load('700 40px Inter'); await document.fonts.load('500 40px Inter');
+  await document.fonts.ready;
+  window.renderAt(0);
+  return TL;
+})();
+</script>
+</body>
+</html>
