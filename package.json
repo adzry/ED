@@ -11,7 +11,7 @@
     "render": "node tools/render.mjs",
     "mix": "tools/mix.sh",
     "check:output": "python3 tools/check_output.py",
-    "stills": "node tools/render.mjs --stills 4,15,28,42,50,56,66,77,89",
+    "stills": "node tools/render.mjs --stills 2.5,8,16,28,42,52,58,68,78,91",
     "build": "npm run narrate && npm run validate && npm run render && npm run mix && npm run check:output && npm run stills"
   },
   "repository": {
@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/adzry/ED#readme",
   "devDependencies": {
+    "@fontsource/caveat": "^5.3.0",
+    "@fontsource/dm-serif-display": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "playwright-core": "1.56"
   },

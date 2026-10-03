@@ -24,7 +24,7 @@ const { fps, duration } = timeline;
 const frames = Math.ceil(duration * fps);
 await mkdir(join(ROOT, 'build'), { recursive: true });
 const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-c:v', 'mjpeg', '-framerate', String(fps), '-i', '-',
-  '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', join(ROOT, 'build', 'video.mp4')],
+  '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-maxrate', '6M', '-bufsize', '12M', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', join(ROOT, 'build', 'video.mp4')],
   { stdio: ['pipe', 'inherit', 'inherit'] });
 const done = new Promise((ok, fail) => ff.on('close', c => (c ? fail(new Error(`ffmpeg exited ${c}`)) : ok())));
 

@@ -33,6 +33,12 @@
   },
   "scenes": [
     {
+      "id": "s0",
+      "name": "Title",
+      "minDuration": 3.6,
+      "lines": []
+    },
+    {
       "id": "s1",
       "name": "The patient",
       "minDuration": 8,

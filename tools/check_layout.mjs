@@ -13,6 +13,9 @@ let arrivedAt;
 const fail = (t, msg) => errors.push(`t=${t.toFixed(2)}s  ${msg}`);
 const inside = (r, b, tol = 2) => r[0] >= b[0] - tol && r[1] >= b[1] - tol && r[2] <= b[2] + tol && r[3] <= b[3] + tol;
 const hit = (a, b) => a[0] < b[2] - 1 && b[0] < a[2] - 1 && a[1] < b[3] - 1 && b[1] < a[3] - 1;
+// Text line boxes include ascender/descender padding (large for display serif and handwriting faces),
+// so compare the glyph core: the rect trimmed by 15% of its height top and bottom.
+const core = r => { const k = (r[3] - r[1]) * .15; return [r[0], r[1] + k, r[2], r[3] - k]; };
 
 // Timeline-level checks.
 let prevEnd = 0;
@@ -39,7 +42,7 @@ for (let t = 0; t <= TL.duration; t += STEP) {
   }
   for (let i = 0; i < solid.length; i++) for (let j = i + 1; j < solid.length; j++)
     for (const a of solid[i].rects) for (const b of solid[j].rects)
-      if (hit(a, b)) fail(t, `text overlap: "${solid[i].text}" / "${solid[j].text}"`);
+      if (hit(core(a), core(b))) fail(t, `text overlap: "${solid[i].text}" / "${solid[j].text}"`);
   if (f.caption) {
     const c = f.caption.rect;
     if (c[3] - c[1] > 80) fail(t, `caption wraps to more than one line: "${f.caption.text}"`);

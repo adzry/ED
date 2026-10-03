@@ -1,6 +1,6 @@
 # Where is the patient? — ED-to-ward visibility for Inpatient Pharmacy
 
-A ~90-second explainer video built strictly from the poster *"The Problem / Why It Matters / Proposed Solution /
+A ~94-second editorial-style explainer video built strictly from the poster *"The Problem / Why It Matters / Proposed Solution /
 How to Update PHIS Location / Our Objective"*. It presents the PHIS workflow as a **proposed** solution, not an
 approved policy.
 
@@ -15,10 +15,11 @@ overrides, caption highlight terms).
 | Step | Tool | What it does |
 |---|---|---|
 | narrate | `tools/narrate.py` | Piper TTS (lessac voice) per line → measured durations set scene/line/caption timing → `build/timeline.json`, `build/narration.wav`, `out/captions.srt` |
-| scenes | `scenes/index.html` | All 8 scenes as HTML/SVG with a deterministic `renderAt(t)`; animations are keyed to narration word timing |
+| scenes | `scenes/index.html` | Title card + 8 chapters as HTML/SVG with a deterministic `renderAt(t)`; animations are keyed to narration word timing |
 | validate | `tools/check_layout.mjs`, `tools/check_text.py` | Frame-sampled layout checks + editorial checks (below) |
 | render | `tools/render.mjs` | Headless Chromium captures every frame → `build/video.mp4` |
-| mix | `tools/mix.sh` | Synthesized ambient pad, side-chain ducked under the voice, loudness-normalized to −16 LUFS, muxed |
+| music | `tools/music.py` | Soft underscore synthesized from the timeline: warm pad, sub bass and felt-piano arpeggios (Am7–Fmaj7–C–G, 84 bpm), a lift at the proposed solution, soft whooshes on chapter changes, resolving final chord |
+| mix | `tools/mix.sh` | Music side-chain ducked under the voice, loudness-normalized to −16 LUFS, muxed |
 | check:output | `tools/check_output.py` | Format, frame rate, duration vs timeline, audio present, loudness, SRT cue count |
 
 ```bash
@@ -35,6 +36,15 @@ npm run build                  # narrate → validate → render → mix → che
   `KECEMASAN & TRAUMA (ADMISSION)`, `Transfer Detail List`), wrong variants of those terms, and a list of claims the
   poster does not support: statistics, "eliminates calls", approved/policy, time saved, medication-error claims,
   real-time/automatic PHIS behaviour, and who performs the update.
+
+## Visual style
+
+Editorial explainer language (no third-party branding or assets): paper texture with film grain and vignette,
+DM Serif Display headlines with Inter labels, highlighter sweeps on key phrases, hand-drawn circles and arrows,
+handwritten (Caveat) margin notes, tilted paper cards, colour-wipe chapter transitions with chapter numerals,
+a dotted route for the ED → ward move, and an abstract cursor walking through the eight PHIS steps.
+Colour keeps the poster's meaning: red = ED / unresolved, green = ward, blue = PHIS / information,
+yellow = proposed solution, purple = objective.
 
 ## Content sources and limits
 
@@ -55,4 +65,4 @@ and approval status. The PHIS interface is shown only as abstract cards, never a
 
 - Voice: Piper `en-us-lessac-medium`, trained on the Blizzard 2013 Lessac dataset, whose licence appears to be
   research/non-commercial. Confirm it suits your intended use (internal hospital training).
-- Font: Inter (SIL OFL). Music is synthesized in `tools/mix.sh`, so there are no third-party audio assets.
+- Fonts: Inter, DM Serif Display, Caveat (all SIL OFL). Music is synthesized in `tools/music.py`, so there are no third-party audio assets.

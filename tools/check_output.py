@@ -27,6 +27,9 @@ def main():
     if not a:
         problems.append("audio stream missing")
     dur = float(probe["format"]["duration"])
+    size_mb = OUT.stat().st_size / 1e6
+    if size_mb > 95:
+        problems.append(f"file is {size_mb:.0f} MB; GitHub rejects files over 100 MB")
     if abs(dur - tl["duration"]) > 0.25:
         problems.append(f"duration {dur:.2f}s differs from timeline {tl['duration']:.2f}s")
     if not 60 <= dur <= 95:

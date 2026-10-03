@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 BUILD = ROOT / "build"
 MODEL = ROOT / "models" / "en-us-lessac-medium.onnx"
 MAX_CAPTION_CHARS = 58
-SPEECH = SynthesisConfig(length_scale=0.92)
+SPEECH = SynthesisConfig(length_scale=0.9)
 
 
 def speakable(text, pronunciation):
