@@ -13,39 +13,38 @@ from spellchecker import SpellChecker
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# Proper nouns / terms taken from the poster.
-GLOSSARY = {"phis", "kecemasan", "ed", "gen", "med", "inpatient", "workflow"}
+# Proper nouns / terms from the poster, British spelling used in the brief, and the Malay phone line.
+GLOSSARY = {"phis", "kecemasan", "ed", "gen", "med", "inpatient", "workflow", "standardise",
+            "masih", "di", "lagi", "ke", "dah", "masuk",
+            "isn"}  # contraction stem: "isn't" is split at the apostrophe
 
-# Exact poster terms that must appear on screen.
+# Exact terms that must appear on screen.
 REQUIRED_ON_SCREEN = [
-    "KECEMASAN & TRAUMA (ADMISSION)", "Kecemasan & Trauma (Admission)", "ACTUAL WARD LOCATION",
-    "INPATIENT", "GEN MED", "Patient Management → Visit Management", "Transfer Detail List",
-    "new ward location", "Proposed solution", "STILL IN ED", "PATIENT IN WARD", "PHIS LOCATION",
-    "PHARMACY VISIBILITY",
+    "INITIAL PROPOSAL", "TO BE VALIDATED", "KECEMASAN & TRAUMA", "(ADMISSION)", "KECEMASAN & TRAUMA (ADMISSION)",
+    "ACTUAL WARD", "INPATIENT", "GEN MED", "STILL IN ED", "VALIDATE", "TEST", "PILOT", "STANDARDISE",
+    "Call ED", "correct PHIS mechanism?",
 ]
 
 # Variants that would misstate a poster term.
 WRONG_TERMS = [
-    r"Trauma\s*&\s*Kecemasan", r"Kecemasan\s+and\s+Trauma", r"General Medicine", r"\bKecemasan\b(?!\s*&\s*Trauma)",
-    r"Transfer Details? Lists\b", r"Transfer Details List", r"\bPHIS system\b",
+    r"Trauma\s*&\s*Kecemasan", r"Kecemasan\s+and\s+Trauma", r"General Medicine",
+    r"\bKecemasan\b(?!\s*&\s*(Trauma|TRAUMA))", r"\bKECEMASAN\b(?!\s*&\s*TRAUMA)", r"\bPHIS system\b",
 ]
 
-# Claims the poster does not support (statistics, outcomes, approval status, system behaviour).
+# Claims the poster and brief do not support, and language the brief rules out.
 UNSUPPORTED = {
     r"\d+\s*%|\bpercent": "statistic",
-    r"\beliminat": "claims calls are eliminated",
-    r"\bno (more|longer) (need|call)": "claims calls are eliminated",
-    r"\bapproved\b|\bpolicy\b|\bmandatory\b|\bSOP\b|\bofficial": "presents proposal as approved",
-    r"\bsaves?\b(?! *$)|\btime sav|\bfaster\b|\breduc": "claims a measured improvement",
+    r"\beliminat|\bno (more|longer) (need|call)": "claims calls are eliminated",
+    r"\bapproved\b|\bpolicy\b|\bmandatory\b|\bSOP\b|\bofficial|\bfinal workflow": "presents proposal as approved/final",
+    r"\btransfer\b|\bTransfer Detail\b": "names a PHIS mechanism as if confirmed",
+    r"\bsolves?\b|\bsolution\b": "presents proposal as a proven solution",
+    r"\btime sav|\bfaster\b|\breduc": "claims a measured improvement",
     r"\berrors?\b|\bunsafe\b|\bdanger|\blife-threatening|\bharm\b": "medication-safety claim",
     r"\breal[- ]time\b|\bautomatic|\binstant": "invented PHIS behaviour",
     r"\bguarantee|\balways\b|\bnever\b|\bevery patient\b": "absolute claim",
-    r"\bnurse|\bclerk|\bdoctor|\bregistrar": "invents who performs the update",
+    r"\bnurse|\bclerk|\bdoctors?\b|\bregistrar": "invents who performs the update",
+    r"\bfault|\bblame|\bmistake|\bnegligen|\bcareless|\bfail": "blames a team",
 }
-# "Click Save" / "and save." are poster workflow steps, not a time-saving claim.
-ALLOWED_SAVE = {"Click Save", "Save", "and save."}
-
-
 def main():
     board = json.loads((ROOT / "script/storyboard.json").read_text())
     tl = json.loads((ROOT / "build/timeline.json").read_text())
@@ -75,15 +74,20 @@ def main():
                 problems.append(f"terminology [{src}] /{pat}/ in: {text}")
         for pat, why in UNSUPPORTED.items():
             for m in re.finditer(pat, text, flags=re.I):
-                if "save" in m.group(0).lower() and (text.strip() in ALLOWED_SAVE or text.rstrip().endswith("and save.")):
-                    continue
                 problems.append(f"unsupported claim ({why}) [{src}] '{m.group(0)}' in: {text}")
 
-    # Proposed framing must be stated in narration for the solution and result.
-    for sid in ("s4", "s6", "s7"):
-        lines = " ".join(l["text"] for s in board["scenes"] if s["id"] == sid for l in s["lines"])
-        if not re.search(r"propos", lines, re.I):
-            problems.append(f"framing: scene {sid} narration does not say the workflow is proposed")
+    # Framing: the narration must call it an initial proposal and say it needs validation,
+    # including whether it is the correct PHIS mechanism.
+    spoken = " ".join(narration)
+    for must, why in [(r"initial proposal", "names it an initial proposal"),
+                      (r"must be validated", "says it must be validated"),
+                      (r"correct PHIS mechanism", "questions whether it is the correct PHIS mechanism")]:
+        if not re.search(must, spoken, re.I):
+            problems.append(f"framing: narration never {why}")
+    # Proposal-stage verbs must stay conditional in the transition scene.
+    for s in board["scenes"]:
+        if s["id"] == "s6" and not all(re.search(r"\bwould\b", l["text"]) for l in s["lines"]):
+            problems.append("framing: transition scene must describe the proposal conditionally ('would')")
 
     # Captions must reproduce the narration exactly.
     for s in tl["scenes"]:

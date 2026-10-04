@@ -1,26 +1,45 @@
 # Where is the patient? — ED-to-ward visibility for Inpatient Pharmacy
 
-A ~94-second editorial-style explainer video built strictly from the poster *"The Problem / Why It Matters / Proposed Solution /
-How to Update PHIS Location / Our Objective"*. It presents the PHIS workflow as a **proposed** solution, not an
-approved policy.
+A ~95-second documentary-style explainer for HOD/leadership, Medical Officers, Inpatient Pharmacy and the IT/PHIS
+team. It is meant to start a conversation, not sell a system. Its spine:
+
+> The problem is not the admission. The problem is knowing where the admitted patient actually is.
+
+The PHIS approach is presented throughout as an **INITIAL PROPOSAL — TO BE VALIDATED**, never as an approved or
+final workflow.
 
 **Output:** `out/ed-pharmacy-visibility.mp4` (1920×1080, 30 fps, H.264 + AAC, captions burned in) and
 `out/captions.srt`.
 
+## Story
+
+| # | Beat | What the viewer sees |
+|---|---|---|
+| 0 | Hook | "Where is the patient?" lands word by word, then about 2.5 s of silence |
+| 1 | Ambiguity | ADMITTED? *Yes.* · STILL IN ED? *Maybe.* · IN THE WARD? *Maybe.* The patient's dot smears across the ED–WARD line |
+| 2 | Thesis | "The problem isn't the ~~admission~~" · physical location ≠ what the system shows |
+| 3 | Human friction | Pharmacy's record shows Location "?" → the phone rings → *"Hi, patient A... masih di ED lagi ke dah masuk ward?"* → "someone has to ask" |
+| 4 | Why it matters | Location → order processing → verification → dispensing |
+| 5 | Initial proposal | "So what if the system itself could make that transition clearer?" → INITIAL PROPOSAL stamp → Visit Type INPATIENT, Department GEN MED, Location KECEMASAN & TRAUMA (ADMISSION) |
+| 6 | Transition | The dot travels ED → WARD; the label "ED" becomes "WARD"; PHIS shows ACTUAL WARD only after arrival |
+| 7 | Before vs proposal, caution | Before: Pharmacy → ? → Call ED. Initial proposal: PHIS → ED admission → physical transition → ward location → clearer visibility, stamped TO BE VALIDATED, with "correct PHIS mechanism?" circled |
+| 8 | Next step | "We may already have the information." → VALIDATE → TEST → PILOT → STANDARDISE → "The goal is to make the patient's transition visible." (final frame held) |
+
+The poster's click-by-click PHIS steps were deliberately left out; they belong in the meeting, not the opener.
+
 ## Pipeline
 
-Everything is generated from one source of truth, `script/storyboard.json` (narration lines, pronunciation
-overrides, caption highlight terms).
+`script/storyboard.json` is the single source for narration, pronunciation, caption highlights and pauses.
 
 | Step | Tool | What it does |
 |---|---|---|
-| narrate | `tools/narrate.py` | Piper TTS (lessac voice) per line → measured durations set scene/line/caption timing → `build/timeline.json`, `build/narration.wav`, `out/captions.srt` |
-| scenes | `scenes/index.html` | Title card + 8 chapters as HTML/SVG with a deterministic `renderAt(t)`; animations are keyed to narration word timing |
-| validate | `tools/check_layout.mjs`, `tools/check_text.py` | Frame-sampled layout checks + editorial checks (below) |
-| render | `tools/render.mjs` | Headless Chromium captures every frame → `build/video.mp4` |
-| music | `tools/music.py` | Soft underscore synthesized from the timeline: warm pad, sub bass and felt-piano arpeggios (Am7–Fmaj7–C–G, 84 bpm), a lift at the proposed solution, soft whooshes on chapter changes, resolving final chord |
-| mix | `tools/mix.sh` | Music side-chain ducked under the voice, loudness-normalized to −16 LUFS, muxed |
-| check:output | `tools/check_output.py` | Format, frame rate, duration vs timeline, audio present, loudness, SRT cue count |
+| narrate | `tools/narrate.py` | Piper TTS per line; measured durations, per-line pauses and per-scene tails set the timeline → `build/timeline.json`, `build/narration.wav`, `out/captions.srt` |
+| scenes | `scenes/index.html` | Nine custom compositions with a deterministic `renderAt(t)`, keyed to narration word timing. Also exports sound cues and the ED → ward logic state |
+| validate | `tools/check_layout.mjs`, `tools/check_text.py` | Frame-sampled layout and logic checks + editorial/factual checks (below) |
+| render | `tools/render.mjs` | Headless Chromium captures every frame → `build/video.mp4` (bitrate capped to stay under GitHub's 100 MB limit) |
+| music | `tools/music.py` | Ambient bed (pad, bass, sparse piano) plus sound effects locked to the picture: soft impacts on key typography, UI ticks, a handset phone ring and pickup, pops, and a swell on "uncertainty". Silent under the hook, near-silent during the call |
+| mix | `tools/mix.sh` | Music ducked under the voice; linear loudness normalization to −16 LUFS; muxed |
+| check:output | `tools/check_output.py` | Format, frame rate, duration, audio, loudness, file size, SRT cue count |
 
 ```bash
 npm install && npm run setup   # Node deps, piper-tts + pyspellchecker, voice model
@@ -30,39 +49,39 @@ npm run build                  # narrate → validate → render → mix → che
 ### Validation
 
 - **Layout** (every 0.2 s): text inside the safe area and inside its card, no overlapping text, captions on one
-  line and clear of all content, narration and captions inside their scene, the "PROPOSED WORKFLOW" tag visible from
-  scene 4 onwards, and **ED → ward logic**: PHIS never shows the ward location before the patient reaches the ward.
-- **Text** (narration, captions and every on-screen string): spelling, the exact poster terms (e.g.
-  `KECEMASAN & TRAUMA (ADMISSION)`, `Transfer Detail List`), wrong variants of those terms, and a list of claims the
-  poster does not support: statistics, "eliminates calls", approved/policy, time saved, medication-error claims,
-  real-time/automatic PHIS behaviour, and who performs the update.
+  line and clear of content, narration and captions inside their scene, the INITIAL PROPOSAL tag visible once the
+  proposal is introduced, and the **ED → ward logic**: PHIS never shows the ward location before the patient arrives.
+- **Text** (narration, captions, every on-screen string): spelling; exact poster terms; the narration must say
+  "initial proposal", "must be validated" and question the "correct PHIS mechanism"; the transition must be
+  described conditionally ("would"). The check also flags anything the poster and brief rule out: statistics,
+  "eliminates calls", approved/final/mandatory, naming a transfer mechanism as confirmed, "solution/solves",
+  measured improvements, medication-error claims, real-time/automatic PHIS behaviour, naming who performs the
+  update, and blaming language.
 
-## Visual style
+## Visual language
 
-Editorial explainer language (no third-party branding or assets): paper texture with film grain and vignette,
-DM Serif Display headlines with Inter labels, highlighter sweeps on key phrases, hand-drawn circles and arrows,
-handwritten (Caveat) margin notes, tilted paper cards, colour-wipe chapter transitions with chapter numerals,
-a dotted route for the ED → ward move, and an abstract cursor walking through the eight PHIS steps.
-Colour keeps the poster's meaning: red = ED / unresolved, green = ward, blue = PHIS / information,
-yellow = proposed solution, purple = objective.
+Neutral paper and ink, with one accent (red) for uncertainty and the information gap, and green for the ward.
+There is one recurring metaphor: the patient's location is a dot on an ED → WARD line. Serif display type carries
+the story, Inter carries the labels, and handwritten notes are used sparingly. Scenes change with a directional
+push. There are no screenshots, stock footage or third-party branding.
 
 ## Content sources and limits
 
-**Confirmed from the poster:** the problem (Pharmacy must call ED to know whether an admitted patient is still in
-ED or in the ward), why it matters (order processing, verification, dispensing; delay, workload, outdated
-information), the ED and ward PHIS states (Visit Type Inpatient, Department Gen Med, Location
-Kecemasan & Trauma (Admission) → Actual Ward Location), the 8 update steps, and the objective.
+**Confirmed from the poster:** the problem (Pharmacy calls ED to learn whether an admitted patient is still in ED
+or already in the ward), why it matters (order processing, verification, dispensing; delay, workload, outdated
+information), the ED-stage PHIS registration (Inpatient · Gen Med · Kecemasan & Trauma (Admission)), the ward state
+(actual ward location), and the objective.
 
-**Proposed (labelled as proposed on screen and in narration):** registering patients under
-Kecemasan & Trauma (Admission), updating the location on ward entry, and the update steps.
+**Initial proposal (labelled as such):** using that registration while the patient remains in ED, and updating the
+location when the patient physically enters the ward. Whether this is the correct PHIS mechanism is stated as
+something still to validate.
 
-**Deliberately not stated, because the poster doesn't say:** who performs the update, whether this applies
-beyond Gen Med, whether PHIS updates in real time, whether phone calls stop entirely, any figures or time savings,
-and approval status. The PHIS interface is shown only as abstract cards, never as screenshots. The poster's phrase
-"potential medication errors" is left out on purpose.
+**Not stated, because it isn't known:** who performs the update, whether this applies beyond Gen Med, real-time
+behaviour, whether phone calls stop, any figures or outcomes, and approval status.
 
 ## Licensing notes
 
 - Voice: Piper `en-us-lessac-medium`, trained on the Blizzard 2013 Lessac dataset, whose licence appears to be
-  research/non-commercial. Confirm it suits your intended use (internal hospital training).
-- Fonts: Inter, DM Serif Display, Caveat (all SIL OFL). Music is synthesized in `tools/music.py`, so there are no third-party audio assets.
+  research/non-commercial. Confirm it suits your intended use (internal hospital use).
+- Fonts: Inter, DM Serif Display, Caveat (all SIL OFL). All music and sound effects are synthesized in
+  `tools/music.py`.

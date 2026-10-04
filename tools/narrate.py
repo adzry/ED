@@ -77,7 +77,7 @@ def main():
     scenes, track = [], []
     for scene in board["scenes"]:
         start = t
-        cursor = start + tm["leadIn"]
+        cursor = start + scene.get("leadIn", tm["leadIn"])
         lines = []
         for i, line in enumerate(scene["lines"]):
             spoken = speakable(line.get("speak", line["text"]), board["pronunciation"])
@@ -97,9 +97,11 @@ def main():
                 caps.append({"text": c, "start": round(c_t, 3), "end": round(c_t + c_d, 3)})
                 c_t += c_d
             lines.append({"text": line["text"], "spoken": spoken, "start": round(cursor, 3),
-                          "end": round(cursor + dur, 3), "captions": caps})
-            cursor += dur + tm["gap"]
-        end = max(cursor - tm["gap"] + tm["tail"], start + scene["minDuration"])
+                          "end": round(cursor + dur, 3), "captions": caps, "burn": line.get("burn", True)})
+            # pauseAfter leaves deliberate silence (e.g. for the phone call) after a line.
+            cursor += dur + tm["gap"] + line.get("pauseAfter", 0)
+        tail = scene.get("tail", tm["tail"])
+        end = max(cursor - tm["gap"] + tail, start + scene["minDuration"])
         scenes.append({"id": scene["id"], "name": scene["name"], "start": round(start, 3),
                        "end": round(end, 3), "lines": lines})
         t = end

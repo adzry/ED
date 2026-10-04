@@ -50,17 +50,16 @@ for (let t = 0; t <= TL.duration; t += STEP) {
     if (c[1] < CAPTION_TOP) fail(t, `caption above caption zone`);
     for (const it of f.items) for (const r of it.rects) if (it.opacity > .05 && hit(r, c)) fail(t, `caption overlaps "${it.text}"`);
   }
-  // Proposed framing: from scene 4 on, the PROPOSED WORKFLOW tag must be visible (except the final fade).
+  // Initial-proposal framing: once the proposal is introduced, the INITIAL PROPOSAL tag stays visible.
   const tag = await page.evaluate(() => +getComputedStyle(document.getElementById('chrome-tag')).opacity);
-  const s4 = TL.scenes.find(s => s.id === 's4').start;
-  if (t > s4 + 1 && t < TL.duration - 1.3 && tag < .9) fail(t, 'PROPOSED WORKFLOW tag not visible');
-  // ED → ward logic: PHIS must not show the ward location before the patient is in the ward.
-  const s5 = await page.evaluate(() => ({ v2: +getComputedStyle(document.getElementById('s5-v2')).opacity,
-    v1: +getComputedStyle(document.getElementById('s5-v1')).opacity,
-    x: parseFloat(document.getElementById('s5-pt').style.left), scene: getComputedStyle(document.getElementById('s5')).visibility }));
-  if (s5.scene === 'visible' && s5.v2 > .01 && s5.x < 1410) fail(t, 'PHIS shows ward location before patient reaches ward');
-  if (s5.scene === 'visible' && s5.x >= 1419) arrivedAt ??= t;
-  if (s5.scene === 'visible' && s5.v1 > .5 && arrivedAt !== undefined && t - arrivedAt > .6) fail(t, 'PHIS still shows ED location well after patient reached ward');
+  const tagFrom = TL.scenes.find(s => s.id === 's6').start;
+  if (t > tagFrom && t < TL.duration - 1.1 && tag < .9) fail(t, 'INITIAL PROPOSAL tag not visible');
+  // ED → ward logic: PHIS must not show the ward location before the patient reaches the ward,
+  // and must not keep showing the ED location long after arrival.
+  const lg = await page.evaluate(() => logicState());
+  if (lg.active && lg.wardShown > .01 && !lg.arrived) fail(t, 'PHIS shows ward location before patient reaches ward');
+  if (lg.active && lg.arrived) arrivedAt ??= t;
+  if (lg.active && lg.edShown > .5 && arrivedAt !== undefined && t - arrivedAt > .7) fail(t, 'PHIS still shows ED location well after patient reached ward');
 }
 await close();
 

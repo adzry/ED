@@ -1,123 +1,123 @@
 1
-00:00:04,200 --> 00:00:06,730
-When a patient is admitted for ward care, they may
+00:00:00,600 --> 00:00:01,688
+Where is the patient?
 
 2
-00:00:06,730 --> 00:00:08,856
-still remain in the Emergency Department —
+00:00:04,700 --> 00:00:07,132
+A patient is admitted, and planned for the ward.
 
 3
-00:00:09,256 --> 00:00:11,368
-for example, while waiting for a bed.
+00:00:07,482 --> 00:00:08,874
+Admitted? Yes.
 
 4
-00:00:12,668 --> 00:00:14,762
-Inpatient Pharmacy needs to know where
+00:00:09,224 --> 00:00:11,480
+Still in the Emergency Department? Maybe.
 
 5
-00:00:14,762 --> 00:00:16,140
-that patient actually is.
+00:00:11,830 --> 00:00:13,686
+Already in the ward? Maybe.
 
 6
-00:00:16,540 --> 00:00:18,924
-Today, the way to find out is to call ED.
+00:00:14,036 --> 00:00:15,700
+That uncertainty is the problem.
 
 7
-00:00:19,324 --> 00:00:21,868
-Is the patient still here, or already in the ward?
+00:00:16,900 --> 00:00:18,580
+The problem isn't the admission.
 
 8
-00:00:23,168 --> 00:00:25,936
-The patient's location affects Pharmacy's workflow:
+00:00:18,930 --> 00:00:21,794
+It's knowing where the admitted patient actually is.
 
 9
-00:00:25,936 --> 00:00:28,432
-order processing, verification and dispensing.
+00:00:22,994 --> 00:00:25,634
+Inpatient Pharmacy needs to know one simple thing:
 
 10
-00:00:28,832 --> 00:00:31,240
-Checking manually adds delay, workload, and
+00:00:25,984 --> 00:00:28,992
+is the patient still in ED, or already in the ward?
 
 11
-00:00:31,240 --> 00:00:33,088
-the risk of outdated information.
+00:00:33,242 --> 00:00:35,496
+Every time the answer isn't immediately
 
 12
-00:00:34,388 --> 00:00:35,588
-The proposed solution.
+00:00:35,496 --> 00:00:37,114
+visible, someone has to ask.
 
 13
-00:00:35,988 --> 00:00:38,649
-For patients planned for ward admission who
+00:00:38,314 --> 00:00:40,602
+And Pharmacy's work depends on that answer.
 
 14
-00:00:38,649 --> 00:00:41,558
-need to stay in ED, register them in PHIS under
+00:00:44,514 --> 00:00:46,129
+So what if the system itself could
 
 15
-00:00:41,558 --> 00:00:43,476
-Kecemasan & Trauma (Admission).
+00:00:46,129 --> 00:00:47,506
+make that transition clearer?
 
 16
-00:00:43,876 --> 00:00:46,964
-Visit type: Inpatient. Department: Gen Med.
+00:00:47,856 --> 00:00:49,408
+Here is an initial proposal.
 
 17
-00:00:48,264 --> 00:00:50,706
-While the patient is still in ED, the
+00:00:49,758 --> 00:00:52,823
+While the patient is still in ED, register them in
 
 18
-00:00:50,706 --> 00:00:54,072
-PHIS location shows Kecemasan & Trauma (Admission).
+00:00:52,823 --> 00:00:55,214
+PHIS at Kecemasan & Trauma (Admission).
 
 19
-00:00:54,472 --> 00:00:57,008
-When the patient enters the receiving ward, the
+00:00:56,414 --> 00:00:59,998
+That location would mean: still at the ED admission stage.
 
 20
-00:00:57,008 --> 00:00:59,112
-location is updated to the actual ward.
+00:01:00,348 --> 00:01:02,933
+When the patient physically enters the ward, the
 
 21
-00:01:00,412 --> 00:01:02,460
-Under the proposal, the update is made in
+00:01:02,933 --> 00:01:05,356
+location would be updated to the actual ward.
 
 22
-00:01:02,460 --> 00:01:04,108
-Visit Management, in eight steps.
+00:01:06,556 --> 00:01:09,178
+But this is only an initial proposal. It must be
 
 23
-00:01:04,508 --> 00:01:07,272
-Find the patient, edit the visit, select the new ward
+00:01:09,178 --> 00:01:11,308
+validated, clinically and technically —
 
 24
-00:01:07,272 --> 00:01:09,724
-location in the Transfer Detail List, and save.
+00:01:11,658 --> 00:01:14,666
+including whether this is the correct PHIS mechanism.
 
 25
-00:01:13,412 --> 00:01:16,564
-Today, Pharmacy calls ED to ask where the patient is.
+00:01:15,866 --> 00:01:17,914
+We may already have the information.
 
 26
-00:01:16,964 --> 00:01:19,911
-Under the proposal, the PHIS location itself shows
+00:01:18,264 --> 00:01:20,439
+The question is whether PHIS can make that
 
 27
-00:01:19,911 --> 00:01:22,916
-whether the patient is still in ED, or in the ward.
+00:01:20,439 --> 00:01:22,614
+transition visible, reliably, and with the
 
 28
-00:01:24,216 --> 00:01:27,292
-The objective: give Inpatient Pharmacy a reliable way to
+00:01:22,614 --> 00:01:23,960
+least additional workload.
 
 29
-00:01:27,292 --> 00:01:29,928
-tell whether an admitted patient is still in ED,
+00:01:24,310 --> 00:01:26,854
+Validate. Test. Pilot. Standardise.
 
 30
-00:01:30,328 --> 00:01:32,341
-or has moved to the receiving ward — with
+00:01:27,204 --> 00:01:28,836
+The goal isn't to add another step.
 
 31
-00:01:32,341 --> 00:01:33,912
-the minimum additional workload.
+00:01:29,186 --> 00:01:31,618
+The goal is to make the patient's transition visible.

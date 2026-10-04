@@ -1,12 +1,12 @@
 {
   "title": "Where is the patient? ED-to-ward location visibility for Inpatient Pharmacy",
-  "source": "Poster: 'The Problem / Why It Matters / Proposed Solution / How to Update PHIS Location / Our Objective'",
+  "source": "Poster (The Problem / Why It Matters / Proposed Solution / Our Objective) + director's brief v3",
   "fps": 30,
   "width": 1920,
   "height": 1080,
   "timing": {
-    "leadIn": 0.6,
-    "gap": 0.4,
+    "leadIn": 0.5,
+    "gap": 0.35,
     "tail": 0.7
   },
   "pronunciation": {
@@ -14,138 +14,164 @@
     "PHIS": "P.H.I.S."
   },
   "highlight": {
-    "STILL IN ED": "red",
-    "still in ED": "red",
-    "call ED": "red",
-    "calls ED": "red",
-    "PATIENT IN WARD": "green",
-    "actual ward": "green",
-    "receiving ward": "green",
-    "PHIS location": "blue",
-    "PHIS": "blue",
-    "Visit Management": "blue",
-    "Transfer Detail List": "blue",
-    "Inpatient Pharmacy": "blue",
-    "Kecemasan & Trauma (Admission)": "yellow",
-    "proposed solution": "yellow",
-    "Under the proposal": "yellow",
-    "minimum additional workload": "purple"
+    "still in ED": "accent",
+    "Still in the Emergency Department": "accent",
+    "call ED": "accent",
+    "someone has to ask": "accent",
+    "Maybe": "accent",
+    "uncertainty": "accent",
+    "already in the ward": "green",
+    "Already in the ward": "green",
+    "the actual ward": "green",
+    "initial proposal": "strong",
+    "validated": "strong",
+    "correct PHIS mechanism": "strong",
+    "Kecemasan & Trauma (Admission)": "strong",
+    "visible": "green"
   },
   "scenes": [
     {
       "id": "s0",
-      "name": "Title",
-      "minDuration": 3.6,
-      "lines": []
+      "name": "Hook",
+      "minDuration": 4.2,
+      "leadIn": 0.6,
+      "tail": 1.9,
+      "lines": [
+        {
+          "text": "Where is the patient?",
+          "burn": false
+        }
+      ]
     },
     {
       "id": "s1",
-      "name": "The patient",
-      "minDuration": 8,
+      "name": "The ambiguity",
+      "minDuration": 9,
       "lines": [
         {
-          "text": "When a patient is admitted for ward care, they may still remain in the Emergency Department —"
+          "text": "A patient is admitted, and planned for the ward."
         },
         {
-          "text": "for example, while waiting for a bed."
+          "text": "Admitted? Yes.",
+          "speak": "Admitted? ... Yes."
+        },
+        {
+          "text": "Still in the Emergency Department? Maybe.",
+          "speak": "Still in the Emergency Department? ... Maybe."
+        },
+        {
+          "text": "Already in the ward? Maybe.",
+          "speak": "Already in the ward? ... Maybe."
+        },
+        {
+          "text": "That uncertainty is the problem."
         }
       ]
     },
     {
       "id": "s2",
-      "name": "The visibility gap",
-      "minDuration": 10,
+      "name": "The thesis",
+      "minDuration": 6.0,
       "lines": [
         {
-          "text": "Inpatient Pharmacy needs to know where that patient actually is."
+          "text": "The problem isn't the admission."
         },
         {
-          "text": "Today, the way to find out is to call ED."
-        },
-        {
-          "text": "Is the patient still here, or already in the ward?"
+          "text": "It's knowing where the admitted patient actually is."
         }
       ]
     },
     {
       "id": "s3",
-      "name": "Why it matters",
-      "minDuration": 10,
+      "name": "The phone call",
+      "minDuration": 12,
       "lines": [
         {
-          "text": "The patient's location affects Pharmacy's workflow: order processing, verification and dispensing."
+          "text": "Inpatient Pharmacy needs to know one simple thing:"
         },
         {
-          "text": "Checking manually adds delay, workload, and the risk of outdated information."
+          "text": "is the patient still in ED, or already in the ward?",
+          "pauseAfter": 3.9
+        },
+        {
+          "text": "Every time the answer isn't immediately visible, someone has to ask."
         }
       ]
     },
     {
       "id": "s4",
-      "name": "Proposed solution",
-      "minDuration": 10,
+      "name": "Why it matters",
+      "minDuration": 6.2,
       "lines": [
         {
-          "text": "The proposed solution."
-        },
-        {
-          "text": "For patients planned for ward admission who need to stay in ED, register them in PHIS under Kecemasan & Trauma (Admission)."
-        },
-        {
-          "text": "Visit type: Inpatient. Department: Gen Med.",
-          "speak": "Visit type, Inpatient. Department, Gen Med."
+          "text": "And Pharmacy's work depends on that answer."
         }
       ]
     },
     {
       "id": "s5",
-      "name": "Two states",
-      "minDuration": 12,
+      "name": "Initial proposal",
+      "minDuration": 10,
       "lines": [
         {
-          "text": "While the patient is still in ED, the PHIS location shows Kecemasan & Trauma (Admission)."
+          "text": "So what if the system itself could make that transition clearer?"
         },
         {
-          "text": "When the patient enters the receiving ward, the location is updated to the actual ward."
+          "text": "Here is an initial proposal."
+        },
+        {
+          "text": "While the patient is still in ED, register them in PHIS at Kecemasan & Trauma (Admission)."
         }
       ]
     },
     {
       "id": "s6",
-      "name": "How PHIS is updated",
-      "minDuration": 13,
+      "name": "The transition",
+      "minDuration": 8.5,
       "lines": [
         {
-          "text": "Under the proposal, the update is made in Visit Management, in eight steps."
+          "text": "That location would mean: still at the ED admission stage."
         },
         {
-          "text": "Find the patient, edit the visit, select the new ward location in the Transfer Detail List, and save."
+          "text": "When the patient physically enters the ward, the location would be updated to the actual ward."
         }
       ]
     },
     {
       "id": "s7",
-      "name": "The result",
-      "minDuration": 10,
+      "name": "Before vs proposal",
+      "minDuration": 8,
       "lines": [
         {
-          "text": "Today, Pharmacy calls ED to ask where the patient is."
+          "text": "But this is only an initial proposal. It must be validated, clinically and technically —"
         },
         {
-          "text": "Under the proposal, the PHIS location itself shows whether the patient is still in ED, or in the ward."
+          "text": "including whether this is the correct PHIS mechanism."
         }
       ]
     },
     {
       "id": "s8",
-      "name": "Objective",
-      "minDuration": 11,
+      "name": "Next step",
+      "minDuration": 14,
+      "tail": 2.6,
       "lines": [
         {
-          "text": "The objective: give Inpatient Pharmacy a reliable way to tell whether an admitted patient is still in ED,"
+          "text": "We may already have the information."
         },
         {
-          "text": "or has moved to the receiving ward — with the minimum additional workload."
+          "text": "The question is whether PHIS can make that transition visible, reliably, and with the least additional workload."
+        },
+        {
+          "text": "Validate. Test. Pilot. Standardise.",
+          "burn": false,
+          "speak": "Validate. ... Test. ... Pilot. ... Standardise."
+        },
+        {
+          "text": "The goal isn't to add another step."
+        },
+        {
+          "text": "The goal is to make the patient's transition visible."
         }
       ]
     }

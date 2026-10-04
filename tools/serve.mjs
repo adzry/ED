@@ -1,6 +1,6 @@
 // Minimal static server for the repo root, so the scene page can load fonts and the timeline.
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -26,5 +26,8 @@ export async function openScene(chromium) {
   page.on('pageerror', e => { throw e; });
   await page.goto(`${url}/scenes/index.html`);
   const timeline = await page.evaluate(() => window.ready);
+  // Sound-design cues are defined next to the animation they belong to; export them for tools/music.py.
+  const cues = await page.evaluate(() => (window.cues ? window.cues() : { cues: [], quiet: [] }));
+  await writeFile(join(ROOT, 'build', 'cues.json'), JSON.stringify(cues, null, 2));
   return { page, timeline, close: async () => { await browser.close(); server.close(); } };
 }
