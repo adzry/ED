@@ -86,12 +86,15 @@ svg.ink path { fill: none; stroke-linecap: round; stroke-linejoin: round; opacit
 
 <!-- 0 · HOOK -->
 <section class="scene" id="s0"><div class="cam">
-  <div class="a t serif" id="h-line" style="left:0; width:1920px; top:360px; text-align:center; font-size:172px; line-height:1">
-    <span id="h-w1" style="display:inline-block">Where</span> <span id="h-w2" style="display:inline-block">is the</span> <span id="h-w3" style="display:inline-block">patient<span style="color:var(--accent)">?</span></span>
+  <div class="a t serif" id="h-line" style="left:140px; top:350px; font-size:150px; line-height:1.08">
+    <span id="h-w1" style="display:inline-block">Where</span> <span id="h-w2" style="display:inline-block">is the</span><br><span id="h-w3" style="display:inline-block">patient<span style="color:var(--accent)">?</span></span>
   </div>
-  <div class="photo" id="h-photo" style="left:715px; top:462px; width:341px; height:469px"><div class="ph"><img src="/assets/inserts/hook_patient.png" alt=""></div></div>
-  <div class="ring" id="h-ring" style="left:960px; top:660px"></div>
-  <div class="dot" id="h-dot" style="left:960px; top:660px; background:var(--accent)"></div>
+  <div class="a" id="h-hero" style="left:960px; top:0; width:960px; height:1080px; overflow:hidden; background:#1a1d22">
+    <img src="/assets/inserts/hook_hero.png" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform-origin:81% 45%">
+    <div class="a" style="inset:0; background:linear-gradient(90deg, rgba(23,25,28,.28), rgba(23,25,28,0) 22%)"></div>
+  </div>
+  <div class="ring" id="h-ring" style="left:1741px; top:438px"></div>
+  <div class="dot" id="h-dot" style="left:1741px; top:438px; background:var(--accent); box-shadow:0 0 0 8px rgba(250,247,240,.35)"></div>
 </div></section>
 
 <!-- 1 · THE AMBIGUITY -->
@@ -376,11 +379,11 @@ const SCENES = {
     const w = ['Where', 'is the', 'patient'];
     ['#h-w1', '#h-w2', '#h-w3'].forEach((s, i) => rv(s, t, W('s0', 0, w[i]), { dy: 40, d: .5 }));
     const end = E('s0', 0) + .35;
-    // After the question lands, the headline makes room and the patient appears; the dot marks them.
-    $('#h-line').style.transform = `translateY(${-170 * eio((t - end) / .7)}px)`;
-    rv('#h-photo', t, end + .1, { dy: 30, d: .7 });
-    $('#h-photo img').style.transform = `scale(${1.02 + .04 * clamp((t - end) / 3)})`;
-    const dotAt = end + .8;
+    // The patient is the hero: revealed by a mask as "patient?" lands, then a slow ~4% push-in.
+    const rev = W('s0', 0, 'patient');
+    $('#h-hero').style.clipPath = `inset(0 0 0 ${100 * (1 - eio((t - rev) / .9))}%)`;
+    $('#h-hero img').style.transform = `scale(${1.0 + .045 * clamp((t - rev) / 3.4)})`;
+    const dotAt = end + .55;
     rv('#h-dot', t, dotAt, { dy: 0, d: .4, extra: `scale(${eback((t - dotAt) / .5)})` });
     pulse('#h-ring', t, dotAt + .2, 1.4, 2.6);
   },
@@ -559,7 +562,7 @@ const SCENES = {
 window.cues = function () {
   const c = [], add = (t, kind) => c.push({ t: +t.toFixed(3), kind });
   add(W('s0', 0, 'patient'), 'impact');
-  add(E('s0', 0) + 1.15, 'pop');
+  add(E('s0', 0) + .35 + .55 + .1, 'pop');
   add(W('s1', 1, 'Yes'), 'tick'); add(W('s1', 2, 'Maybe'), 'tick'); add(W('s1', 3, 'Maybe'), 'tick');
   add(L('s1', 4), 'swell');
   add(W('s2', 0, 'admission') + .5, 'tick');

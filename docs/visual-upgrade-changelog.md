@@ -23,7 +23,7 @@ stay sharp at 1080p.
 
 | Asset | Beat / scene | Treatment |
 |---|---|---|
-| 01 hook (patient on trolley, without the baked "WHERE IS THE PATIENT?") | Hook (0–4 s) | During the silence after the question, the headline lifts and a framed photo rises in with a slow 4% push-in. The red location dot lands just above the patient's head, a callback to the dot metaphor used for the rest of the film. One soft "pop" accent |
+| 01 hook (patient on trolley, without the baked "WHERE IS THE PATIENT?") | Hook (0–4 s) | **V2.2 hero:** split composition. "Where is the / patient?" sits on the left half of the paper. The patient image fills the right half full-bleed (50% of the frame, no border), super-resolved 4× with EDSR (`tools/upscale_hero.py`). It is revealed with a mask as "patient?" is spoken, then pushes in slowly (~4.5%) and the red dot lands above the patient's head. One soft "pop" accent |
 | 02 admitted, still in ED | Ambiguity (≈4.5–7 s), while "A patient is admitted, and planned for the ward" is spoken | Tilted framed card ("Patient A · Admitted for ward · Still in ED") with a push-in. It leaves before "ADMITTED? Yes." so the Q&A rows keep the screen. "Illustration" label |
 | 04 call ED (pharmacist on the phone, without the baked speech bubble) | Phone call (≈29 s) | Replaces the plain phone circle between the Pharmacy and ED cards as the phone rings. The red phone badge and its ring pulses move to the photo's corner. V2's Malay bubble is unchanged |
 | 07 state: still in ED | ED → ward transition (≈56–61 s) | Thumbnail inside the PHIS location card next to "KECEMASAN & TRAUMA (ADMISSION)". "Illustration" label |
@@ -56,3 +56,11 @@ None. Scene timing comes from V2's timeline unchanged.
   a PHIS screenshot.
 - No new on-screen claims were added, and narration and captions are identical to V2.
 - All existing checks pass on the upgraded build: layout, logic, wording and output.
+
+## V2.2: intro hero correction
+
+The V2.1 hook photo read as a thumbnail (341×469 px). It is now the hero visual of the opening, as described in
+the table above. Only the opening composition changed: narration, opening text, timing and every other scene are
+unchanged, and the build again used V2's archived narration and timeline. The hero source is the
+patient region of the board, about 150 px wide, so it was super-resolved once with OpenCV EDSR ×4 rather than
+simply enlarged.

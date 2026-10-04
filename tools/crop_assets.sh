@@ -16,3 +16,10 @@ crop state_ed            353  226  796   292   # 07 — state 1, still in ED
 crop state_ward          363  226  1158  292   # 08 — state 2, in ward
 crop transition          352  144  16    566   # 09 — ED → ward transition
 echo "inserts → $O"
+
+# Hook hero (V2.2): the patient region beside the baked title, super-resolved 4× with EDSR
+# (needs opencv-contrib-python-headless and EDSR_x4.pb; set EDSR_MODEL to its path).
+if [ -n "${EDSR_MODEL:-}" ]; then
+  ffmpeg -loglevel error -y -i "$B" -vf "crop=153:172:232:60" /tmp/hook_hero_src.png
+  python3 tools/upscale_hero.py /tmp/hook_hero_src.png "$O/hook_hero.png"
+fi
