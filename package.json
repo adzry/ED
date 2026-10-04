@@ -12,7 +12,8 @@
     "mix": "tools/mix.sh",
     "check:output": "python3 tools/check_output.py",
     "stills": "node tools/render.mjs --stills 2.4,10,14.8,20.5,27.5,34.2,36.5,43.5,49.5,55.8,62.5,66.4,74.5,77.6,83,86.9,91.5,94.5",
-    "build": "npm run narrate && npm run validate && npm run render && npm run mix && npm run check:output && npm run stills"
+    "build": "npm run narrate && npm run validate && npm run render && npm run mix && npm run check:output && npm run stills",
+    "build:visual": "npm run validate && npm run render && npm run mix && npm run check:output && npm run stills"
   },
   "repository": {
     "type": "git",

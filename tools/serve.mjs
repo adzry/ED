@@ -5,7 +5,7 @@ import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT = normalize(join(fileURLToPath(import.meta.url), '..', '..'));
-const TYPES = { '.html': 'text/html', '.json': 'application/json', '.woff2': 'font/woff2', '.js': 'text/javascript' };
+const TYPES = { '.html': 'text/html', '.json': 'application/json', '.woff2': 'font/woff2', '.js': 'text/javascript', '.png': 'image/png' };
 
 export function serve() {
   const server = createServer(async (req, res) => {

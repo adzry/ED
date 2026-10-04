@@ -1,0 +1,477 @@
+{
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "duration": 97.444,
+  "highlight": {
+    "still in ED": "accent",
+    "Still in the Emergency Department": "accent",
+    "call ED": "accent",
+    "someone has to ask": "accent",
+    "Maybe": "accent",
+    "uncertainty": "accent",
+    "already in the ward": "green",
+    "Already in the ward": "green",
+    "the actual ward": "green",
+    "initial proposal": "strong",
+    "validated": "strong",
+    "correct PHIS mechanism": "strong",
+    "Kecemasan & Trauma (Admission)": "strong",
+    "visible": "green"
+  },
+  "scenes": [
+    {
+      "id": "s0",
+      "name": "Hook",
+      "start": 0.0,
+      "end": 4.2,
+      "lines": [
+        {
+          "text": "Where is the patient?",
+          "spoken": "Where is the patient?",
+          "start": 0.6,
+          "end": 1.592,
+          "captions": [
+            {
+              "text": "Where is the patient?",
+              "start": 0.6,
+              "end": 1.592
+            }
+          ],
+          "burn": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "name": "The ambiguity",
+      "start": 4.2,
+      "end": 16.256,
+      "lines": [
+        {
+          "text": "A patient is admitted, and planned for the ward.",
+          "spoken": "A patient is admitted, and planned for the ward.",
+          "start": 4.7,
+          "end": 7.244,
+          "captions": [
+            {
+              "text": "A patient is admitted, and planned for the ward.",
+              "start": 4.7,
+              "end": 7.244
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "Admitted? Yes.",
+          "spoken": "Admitted? ... Yes.",
+          "start": 7.594,
+          "end": 8.842,
+          "captions": [
+            {
+              "text": "Admitted? Yes.",
+              "start": 7.594,
+              "end": 8.842
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "Still in the Emergency Department? Maybe.",
+          "spoken": "Still in the Emergency Department? ... Maybe.",
+          "start": 9.192,
+          "end": 11.336,
+          "captions": [
+            {
+              "text": "Still in the Emergency Department? Maybe.",
+              "start": 9.192,
+              "end": 11.336
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "Already in the ward? Maybe.",
+          "spoken": "Already in the ward? ... Maybe.",
+          "start": 11.686,
+          "end": 13.51,
+          "captions": [
+            {
+              "text": "Already in the ward? Maybe.",
+              "start": 11.686,
+              "end": 13.51
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "That uncertainty is the problem.",
+          "spoken": "That uncertainty is the problem.",
+          "start": 13.86,
+          "end": 15.556,
+          "captions": [
+            {
+              "text": "That uncertainty is the problem.",
+              "start": 13.86,
+              "end": 15.556
+            }
+          ],
+          "burn": true
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "name": "The thesis",
+      "start": 16.256,
+      "end": 22.256,
+      "lines": [
+        {
+          "text": "The problem isn't the admission.",
+          "spoken": "The problem isn't the admission.",
+          "start": 16.756,
+          "end": 18.42,
+          "captions": [
+            {
+              "text": "The problem isn't the admission.",
+              "start": 16.756,
+              "end": 18.42
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "It's knowing where the admitted patient actually is.",
+          "spoken": "It's knowing where the admitted patient actually is.",
+          "start": 18.77,
+          "end": 21.458,
+          "captions": [
+            {
+              "text": "It's knowing where the admitted patient actually is.",
+              "start": 18.77,
+              "end": 21.458
+            }
+          ],
+          "burn": true
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "name": "The phone call",
+      "start": 22.256,
+      "end": 37.612,
+      "lines": [
+        {
+          "text": "Inpatient Pharmacy needs to know one simple thing:",
+          "spoken": "Inpatient Pharmacy needs to know one simple thing",
+          "start": 22.756,
+          "end": 25.396,
+          "captions": [
+            {
+              "text": "Inpatient Pharmacy needs to know one simple thing:",
+              "start": 22.756,
+              "end": 25.396
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "is the patient still in ED, or already in the ward?",
+          "spoken": "is the patient still in ED, or already in the ward?",
+          "start": 25.746,
+          "end": 28.978,
+          "captions": [
+            {
+              "text": "is the patient still in ED, or already in the ward?",
+              "start": 25.746,
+              "end": 28.978
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "Every time the answer isn't immediately visible, someone has to ask.",
+          "spoken": "Every time the answer isn't immediately visible, someone has to ask.",
+          "start": 32.928,
+          "end": 36.912,
+          "captions": [
+            {
+              "text": "Every time the answer isn't immediately",
+              "start": 32.928,
+              "end": 35.247
+            },
+            {
+              "text": "visible, someone has to ask.",
+              "start": 35.247,
+              "end": 36.912
+            }
+          ],
+          "burn": true
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "name": "Why it matters",
+      "start": 37.612,
+      "end": 43.812,
+      "lines": [
+        {
+          "text": "And Pharmacy's work depends on that answer.",
+          "spoken": "And Pharmacy's work depends on that answer.",
+          "start": 38.112,
+          "end": 40.448,
+          "captions": [
+            {
+              "text": "And Pharmacy's work depends on that answer.",
+              "start": 38.112,
+              "end": 40.448
+            }
+          ],
+          "burn": true
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "name": "Initial proposal",
+      "start": 43.812,
+      "end": 55.76,
+      "lines": [
+        {
+          "text": "So what if the system itself could make that transition clearer?",
+          "spoken": "So what if the system itself could make that transition clearer?",
+          "start": 44.312,
+          "end": 47.24,
+          "captions": [
+            {
+              "text": "So what if the system itself could",
+              "start": 44.312,
+              "end": 45.892
+            },
+            {
+              "text": "make that transition clearer?",
+              "start": 45.892,
+              "end": 47.24
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "Here is an initial proposal.",
+          "spoken": "Here is an initial proposal.",
+          "start": 47.59,
+          "end": 49.222,
+          "captions": [
+            {
+              "text": "Here is an initial proposal.",
+              "start": 47.59,
+              "end": 49.222
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "While the patient is still in ED, register them in PHIS at Kecemasan & Trauma (Admission).",
+          "spoken": "While the patient is still in ED, register them in P.H.I.S. at [[ kətʃəmˈɑːsɑn ]] and Trauma, Admission.",
+          "start": 49.572,
+          "end": 55.06,
+          "captions": [
+            {
+              "text": "While the patient is still in ED, register them in",
+              "start": 49.572,
+              "end": 52.655
+            },
+            {
+              "text": "PHIS at Kecemasan & Trauma (Admission).",
+              "start": 52.655,
+              "end": 55.06
+            }
+          ],
+          "burn": true
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "name": "The transition",
+      "start": 55.76,
+      "end": 65.47,
+      "lines": [
+        {
+          "text": "That location would mean: still at the ED admission stage.",
+          "spoken": "That location would mean, still at the ED admission stage.",
+          "start": 56.26,
+          "end": 59.716,
+          "captions": [
+            {
+              "text": "That location would mean: still at the ED admission stage.",
+              "start": 56.26,
+              "end": 59.716
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "When the patient physically enters the ward, the location would be updated to the actual ward.",
+          "spoken": "When the patient physically enters the ward, the location would be updated to the actual ward.",
+          "start": 60.066,
+          "end": 64.77,
+          "captions": [
+            {
+              "text": "When the patient physically enters the ward, the",
+              "start": 60.066,
+              "end": 62.494
+            },
+            {
+              "text": "location would be updated to the actual ward.",
+              "start": 62.494,
+              "end": 64.77
+            }
+          ],
+          "burn": true
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "name": "Before vs proposal",
+      "start": 65.47,
+      "end": 74.876,
+      "lines": [
+        {
+          "text": "But this is only an initial proposal. It must be validated, clinically and technically —",
+          "spoken": "But this is only an initial proposal. It must be validated, clinically and technically",
+          "start": 65.97,
+          "end": 70.658,
+          "captions": [
+            {
+              "text": "But this is only an initial proposal. It must be",
+              "start": 65.97,
+              "end": 68.556
+            },
+            {
+              "text": "validated, clinically and technically —",
+              "start": 68.556,
+              "end": 70.658
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "including whether this is the correct PHIS mechanism.",
+          "spoken": "including whether this is the correct P.H.I.S. mechanism.",
+          "start": 71.008,
+          "end": 74.176,
+          "captions": [
+            {
+              "text": "including whether this is the correct PHIS mechanism.",
+              "start": 71.008,
+              "end": 74.176
+            }
+          ],
+          "burn": true
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "name": "How the location would be updated",
+      "start": 74.876,
+      "end": 97.444,
+      "lines": [
+        {
+          "text": "Under this initial proposal, the location would be updated in eight steps.",
+          "spoken": "Under this initial proposal, the location would be updated in eight steps.",
+          "start": 75.376,
+          "end": 79.424,
+          "captions": [
+            {
+              "text": "Under this initial proposal, the location",
+              "start": 75.376,
+              "end": 77.65
+            },
+            {
+              "text": "would be updated in eight steps.",
+              "start": 77.65,
+              "end": 79.424
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "In Visit Management, select Kecemasan & Trauma (Admission), and find the patient.",
+          "spoken": "In Visit Management, select [[ kətʃəmˈɑːsɑn ]] and Trauma, Admission, and find the patient.",
+          "start": 79.774,
+          "end": 84.606,
+          "captions": [
+            {
+              "text": "In Visit Management, select",
+              "start": 79.774,
+              "end": 81.405
+            },
+            {
+              "text": "Kecemasan & Trauma (Admission), and find the patient.",
+              "start": 81.405,
+              "end": 84.606
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "Open the patient's visit, and click Edit.",
+          "spoken": "Open the patient's visit, and click Edit.",
+          "start": 84.956,
+          "end": 87.276,
+          "captions": [
+            {
+              "text": "Open the patient's visit, and click Edit.",
+              "start": 84.956,
+              "end": 87.276
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "In the Transfer Detail List, select the new ward location, and save.",
+          "spoken": "In the Transfer Detail List, select the new ward location, and save.",
+          "start": 87.626,
+          "end": 91.802,
+          "captions": [
+            {
+              "text": "In the Transfer Detail List, select the",
+              "start": 87.626,
+              "end": 90.057
+            },
+            {
+              "text": "new ward location, and save.",
+              "start": 90.057,
+              "end": 91.802
+            }
+          ],
+          "burn": true
+        },
+        {
+          "text": "The location would then move from ED admission to the ward.",
+          "spoken": "The location would then move from ED admission to the ward.",
+          "start": 92.152,
+          "end": 95.144,
+          "captions": [
+            {
+              "text": "The location would then move from",
+              "start": 92.152,
+              "end": 93.854
+            },
+            {
+              "text": "ED admission to the ward.",
+              "start": 93.854,
+              "end": 95.144
+            }
+          ],
+          "burn": true
+        }
+      ]
+    }
+  ]
+}

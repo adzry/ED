@@ -27,6 +27,17 @@ final workflow.
 
 The closing scene shows the poster's 8 PHIS steps verbatim, as abstract cards (no screenshots), framed as steps still to be validated.
 
+## Visual upgrade (V2 → V2 + inserts)
+
+Six framed illustrations from the supplied asset pack are layered into the existing scenes (hook, ambiguity,
+phone call, ED → ward states, before-vs-proposal). Narration, timing and captions are unchanged. See
+`docs/visual-upgrade-changelog.md`. The inserts are cropped from the reference board by `tools/crop_assets.sh` into
+`assets/inserts/`. The pre-upgrade V2 render, narration and timeline are kept in `out/archive/`.
+
+```bash
+npm run build:visual           # re-render visuals on the existing narration/timeline (voice timing untouched)
+```
+
 ## Pipeline
 
 `script/storyboard.json` is the single source for narration, pronunciation, caption highlights and pauses.
