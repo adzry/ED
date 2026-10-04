@@ -1,6 +1,6 @@
 # Where is the patient? — ED-to-ward visibility for Inpatient Pharmacy
 
-A ~95-second documentary-style explainer for HOD/leadership, Medical Officers, Inpatient Pharmacy and the IT/PHIS
+A ~97-second documentary-style explainer for HOD/leadership, Medical Officers, Inpatient Pharmacy and the IT/PHIS
 team. It is meant to start a conversation, not sell a system. Its spine:
 
 > The problem is not the admission. The problem is knowing where the admitted patient actually is.
@@ -23,9 +23,9 @@ final workflow.
 | 5 | Initial proposal | "So what if the system itself could make that transition clearer?" → INITIAL PROPOSAL stamp → Visit Type INPATIENT, Department GEN MED, Location KECEMASAN & TRAUMA (ADMISSION) |
 | 6 | Transition | The dot travels ED → WARD; the label "ED" becomes "WARD"; PHIS shows ACTUAL WARD only after arrival |
 | 7 | Before vs proposal, caution | Before: Pharmacy → ? → Call ED. Initial proposal: PHIS → ED admission → physical transition → ward location → clearer visibility, stamped TO BE VALIDATED, with "correct PHIS mechanism?" circled |
-| 8 | Next step | "We may already have the information." → VALIDATE → TEST → PILOT → STANDARDISE → "The goal is to make the patient's transition visible." (final frame held) |
+| 8 | How the location would be updated | Labelled "Initial proposal · steps to be validated": the poster's 8 PHIS steps light up one by one as an abstract cursor clicks through them, ending with the location moving from ED admission to ward |
 
-The poster's click-by-click PHIS steps were deliberately left out; they belong in the meeting, not the opener.
+The closing scene shows the poster's 8 PHIS steps verbatim, as abstract cards (no screenshots), framed as steps still to be validated.
 
 ## Pipeline
 

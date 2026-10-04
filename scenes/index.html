@@ -54,6 +54,11 @@ svg.ink path { fill: none; stroke-linecap: round; stroke-linejoin: round; opacit
   background: linear-gradient(90deg, rgba(210,70,47,.0), rgba(210,70,47,.75) 20%, rgba(210,70,47,.75) 80%, rgba(210,70,47,0)); opacity: 0; }
 
 .stamp { position: absolute; padding: 18px 30px; border: 5px solid var(--ink); font: 800 58px/1 Inter; letter-spacing: .16em; background: rgba(250,247,240,.6); }
+.step { position: absolute; width: 380px; height: 236px; padding: 24px 26px; border: 3px solid transparent; }
+.step .num { width: 54px; height: 54px; border-radius: 50%; border: 3px solid var(--ink); display: grid; place-items: center; font: 800 25px/1 Inter; }
+.step .txt { margin-top: 18px; font: 600 28px/1.22 Inter; white-space: normal; }
+.step .txt b { font-weight: 800; }
+.step svg { position: absolute; right: 24px; top: 26px; }
 #chrome-tag { right: 140px; top: 60px; padding: 12px 18px; border: 3px solid var(--ink); font: 800 18px/1 Inter; letter-spacing: .2em; opacity: 0; background: rgba(250,247,240,.7); }
 #progress { left: 0; top: 0; height: 5px; width: 1920px; background: rgba(23,25,28,.06); }
 #progress b { display: block; height: 100%; width: 0; background: var(--ink); opacity: .45; }
@@ -238,18 +243,15 @@ svg.ink path { fill: none; stroke-linecap: round; stroke-linejoin: round; opacit
 
 <!-- 8 · NEXT STEP -->
 <section class="scene" id="s8"><div class="cam">
-  <div class="a t serif" id="ns-0" style="left:0; width:1920px; top:400px; text-align:center; font-size:92px; line-height:1.1">We may already have the information.</div>
-  <div class="a t serif" id="ns-1" style="left:0; width:1920px; top:300px; text-align:center; font-size:76px; line-height:1.2">Can PHIS make that transition<br><span class="mk green" id="ns-mk1"><i></i>visible</span> — <span class="mk" id="ns-mk2"><i></i>reliably</span> —<br>with the least additional workload?</div>
-  <div id="ns-steps" class="a t" style="left:0; width:1920px; top:430px; text-align:center; font:800 70px/1 Inter; letter-spacing:.05em">
-    <span id="ns-s0">VALIDATE</span><span class="ns-ar" id="ns-a0"> → </span><span id="ns-s1">TEST</span><span class="ns-ar" id="ns-a1"> → </span><span id="ns-s2">PILOT</span><span class="ns-ar" id="ns-a2"> → </span><span id="ns-s3">STANDARDISE</span>
-  </div>
-  <div class="a" id="ns-ul" style="left:0; top:0; height:8px; background:var(--accent); transform-origin:0 50%"></div>
-  <div class="a t serif" id="ns-g0" style="left:0; width:1920px; top:330px; text-align:center; font-size:76px; line-height:1.1; color:var(--grey)">The goal isn't to add another step.</div>
-  <div class="a t serif" id="ns-g1" style="left:0; width:1920px; top:440px; text-align:center; font-size:76px; line-height:1.1">The goal is to make the patient's transition <span class="mk green" id="ns-mk3"><i></i>visible.</span></div>
-  <div id="ns-trk"></div>
-  <div class="a t caps" id="ns-l0" style="left:660px; top:720px; transform:translateX(-50%); color:var(--grey)">ED</div>
-  <div class="a t caps" id="ns-l1" style="left:1260px; top:720px; transform:translateX(-50%); color:var(--grey)">Ward</div>
-  <div class="dot" id="ns-dot" style="left:660px; top:680px"></div>
+  <div class="a caps t" id="st-k" style="left:140px; top:84px; color:var(--accent)">Initial proposal · steps to be validated</div>
+  <div class="a t serif" id="st-h" style="left:140px; top:118px; font-size:66px; line-height:1.1">Moving PHIS location: ED admission → ward</div>
+  <div id="st-steps"></div>
+  <div class="a" id="st-rip" style="width:70px; height:70px; margin:-35px 0 0 -35px; border-radius:50%; border:4px solid var(--ink); opacity:0"></div>
+  <svg class="a" id="st-cur" width="52" height="52" style="margin:-4px 0 0 -8px; opacity:0"><use href="#cursor"/></svg>
+  <div id="st-trk"></div>
+  <div class="a t caps" id="st-l0" style="left:620px; top:868px; transform:translateX(-50%); color:var(--grey)">ED admission</div>
+  <div class="a t caps" id="st-l1" style="left:1300px; top:868px; transform:translateX(-50%); color:var(--grey)">Ward</div>
+  <div class="dot" id="st-dot" style="left:620px; top:840px; background:var(--accent)"></div>
 </div></section>
 
 <div class="a" id="progress"><b></b></div>
@@ -321,6 +323,41 @@ function track(id, x1, x2, y, { labels = true, size = 30 } = {}) {
     <div class="node" style="left:${x1}px; top:${y}px"></div><div class="node" style="left:${x2}px; top:${y}px"></div>` +
     (labels ? `<div class="nlabel t" style="left:${x1}px; top:${y + 34}px; font-size:${size}px">ED</div>
     <div class="nlabel t" style="left:${x2}px; top:${y + 34}px; font-size:${size}px">WARD</div>` : '');
+}
+
+// The poster's eight PHIS steps, verbatim.
+const STEPS = [
+  ['Go to <b>Patient Management → Visit Management</b>', 'menu'],
+  ['Select location <b>Kecemasan &amp; Trauma (Admission)</b>', 'select'],
+  ['<b>Search</b> for the patient', 'search'],
+  ['<b>Double-click</b> the patient’s name', 'click'],
+  ['Click <b>Edit</b>', 'edit'],
+  ['Go to <b>Transfer Detail List</b>', 'list'],
+  ['Select the <b>new ward location</b>', 'select'],
+  ['Click <b>Save</b>', 'save'],
+];
+const GLYPH = {
+  menu:   '<rect x="6" y="10" width="36" height="5" rx="2"/><rect x="6" y="21" width="36" height="5" rx="2"/><rect x="6" y="32" width="24" height="5" rx="2"/>',
+  select: '<rect x="4" y="12" width="40" height="22" rx="5" fill="none" stroke-width="3"/><path d="M30 20l5 6 5-6z"/>',
+  search: '<circle cx="20" cy="20" r="11" fill="none" stroke-width="4"/><path d="M28 28l12 12" stroke-width="5" stroke-linecap="round"/>',
+  click:  '<path d="M14 6l22 18-10 2 6 12-5 2-6-12-7 7z"/>',
+  edit:   '<path d="M8 40l3-11 20-20 8 8-20 20z"/>',
+  list:   '<rect x="6" y="8" width="36" height="8" rx="2"/><rect x="6" y="20" width="36" height="8" rx="2" opacity=".6"/><rect x="6" y="32" width="36" height="8" rx="2" opacity=".35"/>',
+  save:   '<path d="M8 25l11 11 21-24" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>',
+};
+const stepPos = i => [140 + (i % 4) * 420, 252 + Math.floor(i / 4) * 280];
+// Each step lights up as the narration reaches it.
+const stepTimes = () => [W('s8', 1, 'Visit'), W('s8', 1, 'select'), W('s8', 1, 'find'), W('s8', 2, 'Open'),
+  W('s8', 2, 'Edit'), W('s8', 3, 'Transfer'), W('s8', 3, 'select'), W('s8', 3, 'save')];
+function buildSteps() {
+  STEPS.forEach(([txt, g], i) => {
+    const el = document.createElement('div'), [x, y] = stepPos(i);
+    el.className = 'step paper'; el.id = `st-k${i}`;
+    el.style.left = `${x}px`; el.style.top = `${y}px`;
+    el.innerHTML = `<div class="num">${i + 1}</div><div class="txt">${txt}</div>
+      <svg width="46" height="46" viewBox="0 0 48 48" fill="currentColor" stroke="currentColor" style="color:var(--line)">${GLYPH[g]}</svg>`;
+    $('#st-steps').appendChild(el);
+  });
 }
 
 const SCENES = {
@@ -458,34 +495,40 @@ const SCENES = {
     rv('#bp-q', t, W('s7', 1, 'correct') + .4, { dy: 8, extra: 'rotate(-2deg)' });
   },
   s8(t) {
-    const L0 = L('s8', 0), L1 = L('s8', 1), L2 = L('s8', 2), L3 = L('s8', 3), L4 = L('s8', 4);
-    rv('#ns-0', t, L0 - .2, { dy: 16, out: L1 - .3, od: .4 });
-    rv('#ns-1', t, L1 - .1, { dy: 16, out: L2 - .3, od: .4 });
-    marker('#ns-mk1', t, W('s8', 1, 'visible')); marker('#ns-mk2', t, W('s8', 1, 'reliably'));
-    // Validate → Test → Pilot → Standardise, each landing on its spoken word.
-    const words = ['Validate', 'Test', 'Pilot', 'Standardise'];
-    const host = $('#ns-steps'), up = eio((t - L3 + .75) / .55);
-    host.style.opacity = t < L2 - .1 ? 0 : 1;
-    host.style.transform = `translateY(${-260 * up}px) scale(${1 - .45 * up})`;
-    words.forEach((w, i) => {
-      const at = W('s8', 2, w);
-      const el = $(`#ns-s${i}`); el.style.opacity = t < at ? .12 : 1;
-      if (i) $(`#ns-a${i - 1}`).style.opacity = t < at ? .12 : .45;
-      el.style.color = i === 0 ? ACCENT : INK;
+    rv('#st-k', t, L('s8', 0) - .3, { dy: 10 });
+    rv('#st-h', t, L('s8', 0) - .2, { dy: 16 });
+    const at = stepTimes();
+    let cur = -1;
+    STEPS.forEach((_, i) => {
+      const el = $(`#st-k${i}`);
+      const shown = rv(el, t, L('s8', 0) + .3 + i * .07, { max: .4, dy: 20 });
+      const k = eio((t - at[i]) / .4);
+      if (shown >= .99 || k > 0) el.style.opacity = lerp(.4, 1, k);
+      if (t >= at[i] - .5) cur = i;
+      const active = k * clamp(1 - (t - (at[i + 1] ?? 1e9)) / .4);
+      el.style.borderColor = mix('#FAF7F0', ACCENT, active);
+      const n = el.querySelector('.num');
+      n.style.background = mix('#FAF7F0', INK, k); n.style.color = k > .5 ? '#FAF7F0' : INK;
+      el.querySelector('svg').style.color = mix('#CEC5B5', INK, k);
     });
-    const s0 = $('#ns-s0').getBoundingClientRect();
-    const ul = $('#ns-ul');
-    ul.style.left = `${s0.left}px`; ul.style.top = `${s0.bottom + 8}px`; ul.style.width = `${s0.width}px`;
-    ul.style.opacity = t < L3 - .3 ? 1 : 0;
-    ul.style.transform = `scaleX(${eio((t - W('s8', 2, 'Validate') - .2) / .4)})`;
-    rv('#ns-g0', t, L3 - .05, { dy: 16 });
-    rv('#ns-g1', t, L4 - .1, { dy: 16 });
-    marker('#ns-mk3', t, W('s8', 4, 'visible'), .6);
-    // Final image: the patient's transition, made visible.
-    rv('#ns-trk', t, L4 + .2, { dy: 0 }); rv('#ns-l0', t, L4 + .2); rv('#ns-l1', t, L4 + .2);
-    const d = $('#ns-dot'), k = eio((t - L4 - .7) / 2.0);
-    d.style.opacity = eout((t - L4 - .3) / .4); d.style.left = `${lerp(660, 1260, k)}px`;
-    d.style.background = mix(INK, GREEN, eio((t - L4 - 2.2) / .5));
+    // Abstract cursor walks to each step and clicks as it is narrated (no real PHIS screens are shown).
+    const pos = i => { const [x, y] = stepPos(Math.max(0, i)); return [x + 334, y + 64]; };
+    const c = $('#st-cur'), rip = $('#st-rip');
+    if (cur >= 0) {
+      const from = pos(cur - 1), to = pos(cur), m = cur ? eio((t - (at[cur] - .5)) / .5) : 1;
+      const x = lerp(from[0], to[0], m), y = lerp(from[1], to[1], m);
+      c.style.opacity = eout((t - at[0] + .5) / .4) * (1 - eio((t - L('s8', 4)) / .4));
+      c.style.left = `${x}px`; c.style.top = `${y}px`;
+      const rp = clamp((t - at[cur]) / .6);
+      rip.style.left = `${x}px`; rip.style.top = `${y}px`;
+      rip.style.opacity = t >= at[cur] ? (1 - rp) * .7 : 0; rip.style.transform = `scale(${.3 + rp})`;
+    } else { c.style.opacity = 0; rip.style.opacity = 0; }
+    // Result of the final step: the location moves from ED admission to the ward.
+    const L4 = L('s8', 4);
+    rv('#st-trk', t, L4 - .3, { dy: 0 }); rv('#st-l0', t, L4 - .3); rv('#st-l1', t, L4 - .3);
+    const d = $('#st-dot'), k = eio((t - W('s8', 4, 'from')) / 2.0);
+    d.style.opacity = eout((t - L4 + .1) / .4); d.style.left = `${lerp(620, 1300, k)}px`;
+    d.style.background = mix(ACCENT, GREEN, eio((t - W('s8', 4, 'from') - 1.6) / .5));
   },
 };
 
@@ -501,8 +544,8 @@ window.cues = function () {
   add(W('s5', 1, 'initial'), 'impact');
   add(W('s6', 1, 'physically') - .1 + 1.9, 'pop');
   add(W('s7', 0, 'validated'), 'impact');
-  ['Validate', 'Test', 'Pilot', 'Standardise'].forEach(w => add(W('s8', 2, w), 'step'));
-  add(L('s8', 4) + 2.7, 'pop');
+  stepTimes().forEach(at => add(at, 'tick'));
+  add(W('s8', 4, 'from') + 2.0, 'pop');
   return { cues: c, quiet: [E('s3', 1), L('s3', 2) + .3] };
 };
 
@@ -596,7 +639,7 @@ window.inspectFrame = function () {
     if (el.closest('svg')) continue;
     if (!ownText(el).length) continue;
     const o = effOpacity(el); if (o < .05) continue;
-    const box = el.closest('.box, .stamp');
+    const box = el.closest('.box, .stamp, .step');
     items.push({ id: el.id || (el.closest('[id]') || {}).id, text: ownText(el).map(n => n.textContent).join(' ').trim().replace(/\s+/g, ' '), opacity: o,
       rects: textRects(el).map(r => [r.left, r.top, r.right, r.bottom]),
       box: box ? (r => [r.left, r.top, r.right, r.bottom])(box.getBoundingClientRect()) : null,
@@ -618,7 +661,8 @@ window.ready = (async () => {
   track('th-trk1', 560, 1660, 740, { size: 22 });
   track('wm-trk', 660, 1260, 340, { labels: false });
   track('tr-trk', 360, 1560, 400, { labels: false });
-  track('ns-trk', 660, 1260, 680, { labels: false });
+  track('st-trk', 620, 1300, 840, { labels: false });
+  buildSteps();
   $('#s1-plan').setAttribute('d', 'M480 750 Q960 600 1440 750');
   buildTextures();
   for (const f of ['800 40px Inter', '700 40px Inter', '600 40px Inter', '500 40px Inter', '40px Serif', '700 40px Hand']) await document.fonts.load(f);

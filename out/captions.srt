@@ -1,123 +1,131 @@
 1
-00:00:00,600 --> 00:00:01,688
+00:00:00,600 --> 00:00:01,592
 Where is the patient?
 
 2
-00:00:04,700 --> 00:00:07,132
+00:00:04,700 --> 00:00:07,244
 A patient is admitted, and planned for the ward.
 
 3
-00:00:07,482 --> 00:00:08,874
+00:00:07,594 --> 00:00:08,842
 Admitted? Yes.
 
 4
-00:00:09,224 --> 00:00:11,480
+00:00:09,192 --> 00:00:11,336
 Still in the Emergency Department? Maybe.
 
 5
-00:00:11,830 --> 00:00:13,686
+00:00:11,686 --> 00:00:13,510
 Already in the ward? Maybe.
 
 6
-00:00:14,036 --> 00:00:15,700
+00:00:13,860 --> 00:00:15,556
 That uncertainty is the problem.
 
 7
-00:00:16,900 --> 00:00:18,580
+00:00:16,756 --> 00:00:18,420
 The problem isn't the admission.
 
 8
-00:00:18,930 --> 00:00:21,794
+00:00:18,770 --> 00:00:21,458
 It's knowing where the admitted patient actually is.
 
 9
-00:00:22,994 --> 00:00:25,634
+00:00:22,756 --> 00:00:25,396
 Inpatient Pharmacy needs to know one simple thing:
 
 10
-00:00:25,984 --> 00:00:28,992
+00:00:25,746 --> 00:00:28,978
 is the patient still in ED, or already in the ward?
 
 11
-00:00:33,242 --> 00:00:35,496
+00:00:32,928 --> 00:00:35,247
 Every time the answer isn't immediately
 
 12
-00:00:35,496 --> 00:00:37,114
+00:00:35,247 --> 00:00:36,912
 visible, someone has to ask.
 
 13
-00:00:38,314 --> 00:00:40,602
+00:00:38,112 --> 00:00:40,448
 And Pharmacy's work depends on that answer.
 
 14
-00:00:44,514 --> 00:00:46,129
+00:00:44,312 --> 00:00:45,892
 So what if the system itself could
 
 15
-00:00:46,129 --> 00:00:47,506
+00:00:45,892 --> 00:00:47,240
 make that transition clearer?
 
 16
-00:00:47,856 --> 00:00:49,408
+00:00:47,590 --> 00:00:49,222
 Here is an initial proposal.
 
 17
-00:00:49,758 --> 00:00:52,823
+00:00:49,572 --> 00:00:52,655
 While the patient is still in ED, register them in
 
 18
-00:00:52,823 --> 00:00:55,214
+00:00:52,655 --> 00:00:55,060
 PHIS at Kecemasan & Trauma (Admission).
 
 19
-00:00:56,414 --> 00:00:59,998
+00:00:56,260 --> 00:00:59,716
 That location would mean: still at the ED admission stage.
 
 20
-00:01:00,348 --> 00:01:02,933
+00:01:00,066 --> 00:01:02,494
 When the patient physically enters the ward, the
 
 21
-00:01:02,933 --> 00:01:05,356
+00:01:02,494 --> 00:01:04,770
 location would be updated to the actual ward.
 
 22
-00:01:06,556 --> 00:01:09,178
+00:01:05,970 --> 00:01:08,556
 But this is only an initial proposal. It must be
 
 23
-00:01:09,178 --> 00:01:11,308
+00:01:08,556 --> 00:01:10,658
 validated, clinically and technically —
 
 24
-00:01:11,658 --> 00:01:14,666
+00:01:11,008 --> 00:01:14,176
 including whether this is the correct PHIS mechanism.
 
 25
-00:01:15,866 --> 00:01:17,914
-We may already have the information.
+00:01:15,376 --> 00:01:17,650
+Under this initial proposal, the location
 
 26
-00:01:18,264 --> 00:01:20,439
-The question is whether PHIS can make that
+00:01:17,650 --> 00:01:19,424
+would be updated in eight steps.
 
 27
-00:01:20,439 --> 00:01:22,614
-transition visible, reliably, and with the
+00:01:19,774 --> 00:01:21,405
+In Visit Management, select
 
 28
-00:01:22,614 --> 00:01:23,960
-least additional workload.
+00:01:21,405 --> 00:01:24,606
+Kecemasan & Trauma (Admission), and find the patient.
 
 29
-00:01:24,310 --> 00:01:26,854
-Validate. Test. Pilot. Standardise.
+00:01:24,956 --> 00:01:27,276
+Open the patient's visit, and click Edit.
 
 30
-00:01:27,204 --> 00:01:28,836
-The goal isn't to add another step.
+00:01:27,626 --> 00:01:30,057
+In the Transfer Detail List, select the
 
 31
-00:01:29,186 --> 00:01:31,618
-The goal is to make the patient's transition visible.
+00:01:30,057 --> 00:01:31,802
+new ward location, and save.
+
+32
+00:01:32,152 --> 00:01:33,854
+The location would then move from
+
+33
+00:01:33,854 --> 00:01:35,144
+ED admission to the ward.

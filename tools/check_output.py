@@ -32,8 +32,8 @@ def main():
         problems.append(f"file is {size_mb:.0f} MB; GitHub rejects files over 100 MB")
     if abs(dur - tl["duration"]) > 0.25:
         problems.append(f"duration {dur:.2f}s differs from timeline {tl['duration']:.2f}s")
-    if not 60 <= dur <= 95:
-        problems.append(f"duration {dur:.1f}s outside the ~60–90 s target")
+    if not 60 <= dur <= 100:  # ~90 s brief + the 8-step close requested later
+        problems.append(f"duration {dur:.1f}s outside the 60–100 s range")
 
     ebur = subprocess.run(["ffmpeg", "-nostats", "-i", str(OUT), "-af", "ebur128", "-f", "null", "-"],
                           capture_output=True, text=True).stderr

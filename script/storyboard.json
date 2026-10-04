@@ -91,7 +91,7 @@
         },
         {
           "text": "is the patient still in ED, or already in the ward?",
-          "pauseAfter": 3.9
+          "pauseAfter": 3.6
         },
         {
           "text": "Every time the answer isn't immediately visible, someone has to ask."
@@ -152,26 +152,24 @@
     },
     {
       "id": "s8",
-      "name": "Next step",
+      "name": "How the location would be updated",
       "minDuration": 14,
-      "tail": 2.6,
+      "tail": 2.3,
       "lines": [
         {
-          "text": "We may already have the information."
+          "text": "Under this initial proposal, the location would be updated in eight steps."
         },
         {
-          "text": "The question is whether PHIS can make that transition visible, reliably, and with the least additional workload."
+          "text": "In Visit Management, select Kecemasan & Trauma (Admission), and find the patient."
         },
         {
-          "text": "Validate. Test. Pilot. Standardise.",
-          "burn": false,
-          "speak": "Validate. ... Test. ... Pilot. ... Standardise."
+          "text": "Open the patient's visit, and click Edit."
         },
         {
-          "text": "The goal isn't to add another step."
+          "text": "In the Transfer Detail List, select the new ward location, and save."
         },
         {
-          "text": "The goal is to make the patient's transition visible."
+          "text": "The location would then move from ED admission to the ward."
         }
       ]
     }

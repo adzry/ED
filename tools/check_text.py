@@ -21,8 +21,11 @@ GLOSSARY = {"phis", "kecemasan", "ed", "gen", "med", "inpatient", "workflow", "s
 # Exact terms that must appear on screen.
 REQUIRED_ON_SCREEN = [
     "INITIAL PROPOSAL", "TO BE VALIDATED", "KECEMASAN & TRAUMA", "(ADMISSION)", "KECEMASAN & TRAUMA (ADMISSION)",
-    "ACTUAL WARD", "INPATIENT", "GEN MED", "STILL IN ED", "VALIDATE", "TEST", "PILOT", "STANDARDISE",
-    "Call ED", "correct PHIS mechanism?",
+    "ACTUAL WARD", "INPATIENT", "GEN MED", "STILL IN ED", "Call ED", "correct PHIS mechanism?",
+    "Initial proposal · steps to be validated",
+    # The poster's eight update steps.
+    "Patient Management → Visit Management", "Kecemasan & Trauma (Admission)", "for the patient", "Double-click",
+    "the patient’s name", "Edit", "Transfer Detail List", "new ward location", "Save",
 ]
 
 # Variants that would misstate a poster term.
@@ -36,7 +39,8 @@ UNSUPPORTED = {
     r"\d+\s*%|\bpercent": "statistic",
     r"\beliminat|\bno (more|longer) (need|call)": "claims calls are eliminated",
     r"\bapproved\b|\bpolicy\b|\bmandatory\b|\bSOP\b|\bofficial|\bfinal workflow": "presents proposal as approved/final",
-    r"\btransfer\b|\bTransfer Detail\b": "names a PHIS mechanism as if confirmed",
+    # "Transfer Detail List" is the poster's PHIS screen name; any other "transfer" wording is not allowed.
+    r"\btransfer\b(?! Detail List)": "names a PHIS mechanism as if confirmed",
     r"\bsolves?\b|\bsolution\b": "presents proposal as a proven solution",
     r"\btime sav|\bfaster\b|\breduc": "claims a measured improvement",
     r"\berrors?\b|\bunsafe\b|\bdanger|\blife-threatening|\bharm\b": "medication-safety claim",
@@ -86,8 +90,10 @@ def main():
             problems.append(f"framing: narration never {why}")
     # Proposal-stage verbs must stay conditional in the transition scene.
     for s in board["scenes"]:
-        if s["id"] == "s6" and not all(re.search(r"\bwould\b", l["text"]) for l in s["lines"]):
-            problems.append("framing: transition scene must describe the proposal conditionally ('would')")
+        # The transition scene, and the framing lines around the step list, must stay conditional.
+        framing = s["lines"] if s["id"] == "s6" else [s["lines"][0], s["lines"][-1]] if s["id"] == "s8" else []
+        if not all(re.search(r"\bwould\b", l["text"]) for l in framing):
+            problems.append(f"framing: {s['id']} must describe the proposal conditionally ('would')")
 
     # Captions must reproduce the narration exactly.
     for s in tl["scenes"]:
